@@ -473,13 +473,19 @@ export default function VendorResilienceDeck() {
                 </div>
                 <div style={{ marginBottom: '12px', color: '#666' }}>{getCategoryIcon(currentWildCard.category)}</div>
                 <h2 style={{ fontSize: '22px', marginBottom: '16px', color: '#333', fontWeight: '700' }}>{currentWildCard.title}</h2>
-                <p style={{ fontSize: '16px', lineHeight: '1.7', marginBottom: '24px', color: '#444', flexGrow: 1 }}>{currentWildCard.description}</p>
+                <p style={{ fontSize: '16px', lineHeight: '1.7', marginBottom: '16px', color: '#444' }}>{currentWildCard.description}</p>
                 <h3 style={{ fontSize: '13px', color: '#666', marginBottom: '8px', fontWeight: '700' }}>CONSIDER:</h3>
-                <ul style={{ margin: '0 0 20px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
+                <ul style={{ margin: '0 0 20px 0', paddingLeft: '18px', fontSize: '14px', color: '#444', flexGrow: 1 }}>
                   {currentWildCard.consider.map((item, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{item}</li>)}
                 </ul>
                 <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
-                  <button onClick={handleDrawAnother} style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                  <button onClick={() => {
+                    if (selectedWildCategory) {
+                      const categoryCards = availableWildCards.filter(card => card.category === selectedWildCategory);
+                      const randomIndex = Math.floor(Math.random() * categoryCards.length);
+                      setCurrentWildCard(categoryCards[randomIndex]);
+                    }
+                  }} style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <Icons.refresh /> Draw Another
                   </button>
                   <button onClick={clearWildCard} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
