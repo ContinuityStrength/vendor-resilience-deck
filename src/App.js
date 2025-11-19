@@ -138,6 +138,15 @@ const Icons = {
   )
 };
 
+// Lead gen messages by category
+const leadGenMessages = {
+  cyber: "Continuity Strength helps organizations quickly assess and monitor vendor cyber resilience.",
+  operational: "Continuity Strength helps organizations quickly build operational resilience into vendor relationships.",
+  supply: "Continuity Strength helps organizations quickly map and mitigate supply chain concentration risks.",
+  smb: "Continuity Strength helps organizations quickly assess, embed and manage resilience risk across their SMB vendors.",
+  compliance: "Continuity Strength helps organizations quickly produce regulatory evidence across their third-party portfolio."
+};
+
 // Demo scenarios (3)
 const demoScenarios = [
   {
@@ -276,6 +285,14 @@ export default function VendorResilienceDeck() {
     setShowWildCardSelector(false);
   };
 
+  const drawAnotherWildCard = () => {
+    if (selectedWildCategory) {
+      const categoryCards = availableWildCards.filter(card => card.category === selectedWildCategory);
+      const randomIndex = Math.floor(Math.random() * categoryCards.length);
+      setCurrentWildCard(categoryCards[randomIndex]);
+    }
+  };
+
   const startTimer = () => {
     const mins = parseInt(timerInput) || 15;
     setTimerMinutes(mins);
@@ -292,7 +309,6 @@ export default function VendorResilienceDeck() {
 
   const clearWildCard = () => {
     setCurrentWildCard(null);
-    setSelectedWildCategory(null);
   };
 
   const renderHeader = () => (
@@ -354,7 +370,7 @@ export default function VendorResilienceDeck() {
     return (
       <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', flex: 1 }}>
         <div style={{ marginBottom: '16px' }}>
-          <button onClick={() => { setCurrentView('main'); setCurrentWildCard(null); }} style={{ padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
+          <button onClick={() => { setCurrentView('main'); setCurrentWildCard(null); setSelectedWildCategory(null); }} style={{ padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
             <Icons.back /> Back to Deck
           </button>
         </div>
@@ -374,16 +390,14 @@ export default function VendorResilienceDeck() {
             {String(timerMinutes).padStart(2, '0')}:{String(timerSeconds).padStart(2, '0')}
           </span>
           
-          {/* Wild Card Button and Dropdown */}
+          {/* Wild Card Button - always visible */}
           <div style={{ marginLeft: 'auto', position: 'relative' }}>
-            {!currentWildCard && !showWildCardSelector && (
-              <button onClick={() => setShowWildCardSelector(true)} style={{ padding: '8px 16px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Icons.wildcard /> Add Wild Card
-              </button>
-            )}
+            <button onClick={() => setShowWildCardSelector(!showWildCardSelector)} style={{ padding: '8px 16px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Icons.wildcard /> {currentWildCard ? 'Change Category' : 'Add Wild Card'}
+            </button>
             
             {/* Dropdown selector */}
-            {showWildCardSelector && !currentWildCard && (
+            {showWildCardSelector && (
               <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '8px', padding: '12px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, width: '220px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <span style={{ fontSize: '13px', fontWeight: '600', color: '#333' }}>Select Category</span>
@@ -391,7 +405,7 @@ export default function VendorResilienceDeck() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {wildCardCategories.map(cat => (
-                    <button key={cat.id} onClick={() => drawWildCard(cat.id)} style={{ padding: '8px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button key={cat.id} onClick={() => drawWildCard(cat.id)} style={{ padding: '8px 12px', backgroundColor: selectedWildCategory === cat.id ? '#fff8f6' : '#f8f8f8', border: selectedWildCategory === cat.id ? '1px solid #e86c3a' : '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{ color: '#666' }}>{getCategoryIcon(cat.icon)}</span> {cat.label}
                     </button>
                   ))}
@@ -432,10 +446,16 @@ export default function VendorResilienceDeck() {
                     {selectedScenario.prompts.map((prompt, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{prompt}</li>)}
                   </ul>
                   <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>REAL-WORLD CHECK</h3>
-                  <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
+                  <ul style={{ margin: '0 0 24px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
                     {selectedScenario.realWorldCheck.map((check, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{check}</li>)}
                   </ul>
-                  <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
+                  {/* Lead gen message */}
+                  <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
+                    <p style={{ fontSize: '12px', color: '#65b3cf', margin: '0 0 16px 0', lineHeight: '1.5', textAlign: 'center' }}>
+                      {leadGenMessages[selectedScenario.category]}
+                    </p>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -457,7 +477,7 @@ export default function VendorResilienceDeck() {
                   {currentWildCard.consider.map((item, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{item}</li>)}
                 </ul>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <button onClick={() => drawWildCard(selectedWildCategory)} style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                  <button onClick={drawAnotherWildCard} style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <Icons.refresh /> Draw Another
                   </button>
                   <button onClick={clearWildCard} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
