@@ -267,6 +267,7 @@ export default function VendorResilienceDeck() {
     setSelectedScenario(availableScenarios[randomIndex]);
     setIsFlipped(false);
     setCurrentWildCard(null);
+    setSelectedWildCategory(null);
     setCurrentView('scenario');
   };
 
@@ -274,6 +275,7 @@ export default function VendorResilienceDeck() {
     setSelectedScenario(scenario);
     setIsFlipped(false);
     setCurrentWildCard(null);
+    setSelectedWildCategory(null);
     setCurrentView('scenario');
   };
 
@@ -285,7 +287,7 @@ export default function VendorResilienceDeck() {
     setShowWildCardSelector(false);
   };
 
-  const drawAnotherWildCard = () => {
+  const handleDrawAnother = () => {
     if (selectedWildCategory) {
       const categoryCards = availableWildCards.filter(card => card.category === selectedWildCategory);
       const randomIndex = Math.floor(Math.random() * categoryCards.length);
@@ -319,7 +321,7 @@ export default function VendorResilienceDeck() {
   );
 
   const renderFooter = () => (
-    <div style={{ backgroundColor: '#e0e0e0', padding: '16px 24px', marginTop: 'auto' }}>
+    <div style={{ backgroundColor: '#e0e0e0', padding: '16px 24px', marginTop: '40px', flexShrink: 0 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div style={{ color: '#333', fontSize: '13px' }}>
           www.ContinuityStrength.com/TPRM
@@ -415,14 +417,14 @@ export default function VendorResilienceDeck() {
           </div>
         </div>
 
-        {/* Cards container - side by side with fixed widths */}
-        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', alignItems: 'flex-start' }}>
-          {/* Scenario Card - fixed width */}
+        {/* Cards container - side by side with fixed height */}
+        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', alignItems: 'stretch' }}>
+          {/* Scenario Card - fixed dimensions */}
           <div style={{ width: '520px', flexShrink: 0 }}>
-            <div onClick={() => setIsFlipped(!isFlipped)} style={{ perspective: '1000px', cursor: 'pointer' }}>
-              <div style={{ position: 'relative', width: '100%', minHeight: '520px', transition: 'transform 0.6s', transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+            <div onClick={() => setIsFlipped(!isFlipped)} style={{ perspective: '1000px', cursor: 'pointer', height: '100%' }}>
+              <div style={{ position: 'relative', width: '100%', height: '580px', transition: 'transform 0.6s', transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
                 {/* Front of card */}
-                <div style={{ position: 'absolute', width: '100%', minHeight: '520px', backfaceVisibility: 'hidden', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', border: '1px solid #eee', boxSizing: 'border-box' }}>
+                <div style={{ position: 'absolute', width: '100%', height: '580px', backfaceVisibility: 'hidden', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', border: '1px solid #eee', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                     <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
                     <span style={{ fontSize: '12px', color: '#666', display: 'flex', alignItems: 'center', gap: '6px' }}>{getCategoryIcon(selectedScenario.category)} {selectedScenario.categoryLabel}</span>
@@ -433,25 +435,25 @@ export default function VendorResilienceDeck() {
                   <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
                 </div>
                 {/* Back of card */}
-                <div style={{ position: 'absolute', width: '100%', minHeight: '520px', backfaceVisibility: 'hidden', backgroundColor: '#fafafa', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', transform: 'rotateY(180deg)', overflow: 'auto', border: '1px solid #eee', boxSizing: 'border-box' }}>
+                <div style={{ position: 'absolute', width: '100%', height: '580px', backfaceVisibility: 'hidden', backgroundColor: '#fafafa', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', transform: 'rotateY(180deg)', overflow: 'auto', border: '1px solid #eee', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                     <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
                   </div>
                   <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>SCENARIO DETAILS</h3>
-                  <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
-                    {selectedScenario.details.map((detail, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{detail}</li>)}
+                  <ul style={{ margin: '0 0 12px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
+                    {selectedScenario.details.map((detail, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{detail}</li>)}
                   </ul>
                   <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>DISCUSSION PROMPTS</h3>
-                  <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
-                    {selectedScenario.prompts.map((prompt, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{prompt}</li>)}
+                  <ul style={{ margin: '0 0 12px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
+                    {selectedScenario.prompts.map((prompt, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{prompt}</li>)}
                   </ul>
                   <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>REAL-WORLD CHECK</h3>
-                  <ul style={{ margin: '0 0 24px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
-                    {selectedScenario.realWorldCheck.map((check, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{check}</li>)}
+                  <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
+                    {selectedScenario.realWorldCheck.map((check, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{check}</li>)}
                   </ul>
                   {/* Lead gen message */}
-                  <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
-                    <p style={{ fontSize: '12px', color: '#65b3cf', margin: '0 0 16px 0', lineHeight: '1.5', textAlign: 'center' }}>
+                  <div style={{ marginTop: 'auto' }}>
+                    <p style={{ fontSize: '11px', color: '#65b3cf', margin: '0 0 12px 0', lineHeight: '1.5', textAlign: 'center' }}>
                       {leadGenMessages[selectedScenario.category]}
                     </p>
                     <div style={{ textAlign: 'center', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
@@ -461,10 +463,10 @@ export default function VendorResilienceDeck() {
             </div>
           </div>
 
-          {/* Wild Card - same fixed width */}
+          {/* Wild Card - same fixed height */}
           {currentWildCard && (
             <div style={{ width: '520px', flexShrink: 0 }}>
-              <div style={{ backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', minHeight: '520px', display: 'flex', flexDirection: 'column', border: '2px solid #e86c3a', boxSizing: 'border-box' }}>
+              <div style={{ backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', height: '580px', display: 'flex', flexDirection: 'column', border: '2px solid #e86c3a', boxSizing: 'border-box' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
                   <span style={{ fontSize: '11px', padding: '4px 10px', backgroundColor: '#e86c3a', color: '#fff', borderRadius: '4px', fontWeight: '600' }}>WILD CARD</span>
@@ -476,8 +478,8 @@ export default function VendorResilienceDeck() {
                 <ul style={{ margin: '0 0 20px 0', paddingLeft: '18px', fontSize: '14px', color: '#444' }}>
                   {currentWildCard.consider.map((item, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{item}</li>)}
                 </ul>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button onClick={drawAnotherWildCard} style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+                  <button onClick={handleDrawAnother} style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <Icons.refresh /> Draw Another
                   </button>
                   <button onClick={clearWildCard} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
