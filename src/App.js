@@ -288,8 +288,8 @@ export default function VendorResilienceDeck() {
   };
 
   const handleDrawAnother = () => {
-    if (selectedWildCategory) {
-      const categoryCards = availableWildCards.filter(card => card.category === selectedWildCategory);
+    if (currentWildCard) {
+      const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
       const randomIndex = Math.floor(Math.random() * categoryCards.length);
       setCurrentWildCard(categoryCards[randomIndex]);
     }
