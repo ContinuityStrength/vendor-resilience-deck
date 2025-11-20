@@ -358,7 +358,7 @@ function VendorResilienceDeck() {
       {!hasAccess && (
         <div style={{ backgroundColor: '#fff8f6', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e86c3a' }}>
           <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 12 wild cards</p>
-          <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
+          <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="https://buy.stripe.com/eVq6oH8MGcHB3XKdZ14sE0W" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
         </div>
       )}
 
@@ -376,7 +376,7 @@ function VendorResilienceDeck() {
         )}
       </div>
       <div style={{ textAlign: 'center', marginTop: '32px' }}>
-        <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Get the full deck: 50 scenarios + 48 wild cards →</a>
+        <a href="https://buy.stripe.com/eVq6oH8MGcHB3XKdZ14sE0W" style={{ color: '#e86c3a', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Get the full deck: 50 scenarios + 48 wild cards →</a>
       </div>
     </div>
   );
@@ -566,7 +566,7 @@ function VendorResilienceDeck() {
       <button onClick={validateAccessCode} style={{ width: '100%', padding: '14px 24px', fontSize: '15px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Unlock Full Deck</button>
       <div style={{ textAlign: 'center', marginTop: '24px' }}>
         <p style={{ color: '#666', marginBottom: '8px', fontSize: '14px' }}>Don't have an access code?</p>
-        <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '600', fontSize: '14px' }}>Purchase the full deck →</a>
+        <a href="https://buy.stripe.com/eVq6oH8MGcHB3XKdZ14sE0W" style={{ color: '#e86c3a', fontWeight: '600', fontSize: '14px' }}>Purchase the full deck →</a>
       </div>
     </div>
   );
