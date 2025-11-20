@@ -630,33 +630,55 @@ function VendorResilienceDeck() {
   };
 
   const renderGuide = () => (
-    <div style={{ padding: '24px', maxWidth: '700px', margin: '0 auto', flex: 1 }}>
+    <div style={{ padding: '24px', maxWidth: '1100px', margin: '0 auto', flex: 1 }}>
       <button onClick={() => setCurrentView('main')} style={{ marginBottom: '20px', padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
         <Icons.back /> Back to Deck
       </button>
-      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '32px', marginBottom: '16px' }} />
         <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Scenario Index</h2>
         <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Click any scenario to begin exercise</p>
       </div>
-      {scenarioCategories.map(category => {
-        const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
-        if (categoryScenarios.length === 0) return null;
-        return (
-          <div key={category.id} style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-              {getCategoryIcon(category.icon)} {category.label}
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {categoryScenarios.map(scenario => (
-                <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '12px 16px', backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '8px', cursor: 'pointer', textAlign: 'left', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ color: '#bbb', fontSize: '12px', minWidth: '28px', fontWeight: '500' }}>#{scenario.id}</span> {scenario.title}
-                </button>
-              ))}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
+        {scenarioCategories.slice(0, 3).map(category => {
+          const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+          if (categoryScenarios.length === 0) return null;
+          return (
+            <div key={category.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+              <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                {getCategoryIcon(category.icon)} {category.label}
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {categoryScenarios.map(scenario => (
+                  <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+        {scenarioCategories.slice(3, 5).map(category => {
+          const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+          if (categoryScenarios.length === 0) return null;
+          return (
+            <div key={category.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+              <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                {getCategoryIcon(category.icon)} {category.label}
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {categoryScenarios.map(scenario => (
+                  <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 
