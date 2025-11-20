@@ -160,7 +160,7 @@ const demoScenarios = [
     realWorldCheck: ['Cyber insurance coverage?', 'Documented incident response plan?', 'Tested recovery procedures?']
   },
   {
-    id: 2,
+    id: 31,
     category: 'smb',
     categoryLabel: 'SMB Vendor Failure',
     title: 'Vendor Owner Hospitalized',
@@ -170,7 +170,7 @@ const demoScenarios = [
     realWorldCheck: ['Which SMB vendors have succession plans?', 'Key person dependencies?', 'Whether vendor processes are documented?']
   },
   {
-    id: 3,
+    id: 41,
     category: 'compliance',
     categoryLabel: 'Regulatory/Compliance',
     title: 'Vendor Fails DORA Audit',
@@ -181,25 +181,155 @@ const demoScenarios = [
   }
 ];
 
-const fullScenarios = [...demoScenarios];
+// Full scenarios (50 total) - PART 1: Scenarios 1-25
+const fullScenariosP1 = [
+  // Cyber (1-10)
+  { id: 1, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Payment Processor Ransomware', frontDescription: 'Your payment processing vendor reports a ransomware attack. All transactions are offline.', details: ['Vendor expects 72-hour minimum outage', '40% of your transactions flow through them', 'Customer support lines overwhelmed', 'Media is reporting the incident'], prompts: ['Do we have an alternate payment processor under contract?', 'How do we communicate with customers?', 'What is our financial exposure per hour?', 'Who has authority to activate backup vendors?'], realWorldCheck: ['Cyber insurance coverage?', 'Documented incident response plan?', 'Tested recovery procedures?'] },
+  { id: 2, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Cloud Provider Data Breach', frontDescription: 'Your cloud hosting provider suffers a data breach exposing customer PII stored in their environment.', details: ['Breach occurred 3 weeks ago, just disclosed', 'Uncertain which data was accessed', 'Regulatory notification deadlines approaching', 'Media inquiries already coming in'], prompts: ['What customer data did we store there?', 'Who leads our breach response?', 'What are our notification obligations?', 'How do we communicate with affected customers?'], realWorldCheck: ['Data inventory for cloud providers?', 'Breach notification procedures?', 'Cyber liability coverage?'] },
+  { id: 3, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'HR System Compromise', frontDescription: 'Your HR and payroll vendor reports unauthorized access to employee records including SSNs and bank details.', details: ['All current and former employees affected', 'Includes executive compensation data', 'Vendor downplaying severity', 'Employees already posting on social media'], prompts: ['How do we communicate with employees?', 'What credit monitoring will we offer?', 'What is our legal exposure?', 'How do we handle media inquiries?'], realWorldCheck: ['Employee data protection policies?', 'Vendor security certifications current?', 'D&O insurance implications?'] },
+  { id: 4, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Supply Chain Software Attack', frontDescription: 'Malicious code discovered in a routine software update from your trusted ERP vendor.', details: ['Update was auto-installed across systems', 'Backdoor allows remote access', 'Unknown how long it was active', 'Vendor investigating but no timeline'], prompts: ['Which systems received the update?', 'Can we isolate affected systems?', 'How do we verify system integrity?', 'What forensics capability do we have?'], realWorldCheck: ['Software supply chain controls?', 'Vendor code signing practices?', 'Incident response retainer in place?'] },
+  { id: 5, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Email Security Outage', frontDescription: 'Your email security vendor experiences complete service failure. All filtering is offline.', details: ['Spam and phishing flooding inboxes', 'Business communications disrupted', 'Remote workers most affected', 'No ETA for restoration'], prompts: ['How do we warn employees?', 'Can we block email entirely?', 'What critical communications are stuck?', 'Do we have backup filtering?'], realWorldCheck: ['Email continuity plans?', 'Alternative communication channels?', 'SLA remedies available?'] },
+  { id: 6, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'IoT Device Vulnerability', frontDescription: 'Critical vulnerability discovered in IoT devices from your building management vendor. Exploit code is public.', details: ['Devices control HVAC and access systems', 'Patch not available yet', 'Devices cannot be easily isolated', 'Affects multiple facilities'], prompts: ['How many devices are affected?', 'Can we implement compensating controls?', 'What is the physical security risk?', 'Should we replace devices entirely?'], realWorldCheck: ['IoT inventory and segmentation?', 'Vendor patch SLAs?', 'Physical security backup procedures?'] },
+  { id: 7, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Authentication Provider Down', frontDescription: 'Your single sign-on provider experiences global outage. Employees locked out of all systems.', details: ['Customer-facing apps also inaccessible', 'Outage affects thousands of companies', 'Provider communications minimal', 'Workarounds creating security gaps'], prompts: ['What break-glass procedures exist?', 'Which systems have local authentication?', 'How do we serve customers?', 'What is our manual workaround?'], realWorldCheck: ['SSO dependency mapping?', 'Backup authentication methods?', 'Break-glass procedures tested?'] },
+  { id: 8, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Vendor Insider Threat', frontDescription: 'A vendor employee with privileged access to your systems is caught exfiltrating proprietary data.', details: ['Product roadmaps and pricing accessed', 'Data may have been sold to competitor', 'Vendor minimizing the incident', 'Legal action being considered'], prompts: ['What data was accessed?', 'How do we preserve evidence?', 'What legal action is appropriate?', 'How do we prevent future access?'], realWorldCheck: ['Vendor background check requirements?', 'Access logging and monitoring?', 'NDA enforcement options?'] },
+  { id: 9, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'DDoS Attack on Vendor', frontDescription: 'Your critical SaaS vendor is under sustained DDoS attack. Service degraded for 48+ hours.', details: ['Intermittent access frustrating users', 'Vendor says attack is ongoing', 'Competitors not affected', 'Customer complaints escalating'], prompts: ['Can we cache critical data locally?', 'How do we communicate with users?', 'What manual processes can we use?', 'Should we consider switching vendors?'], realWorldCheck: ['Vendor DDoS protection?', 'Service redundancy options?', 'Business continuity for SaaS outages?'] },
+  { id: 10, category: 'cyber', categoryLabel: 'Vendor Cyber Incident', title: 'Third-Party API Breach', frontDescription: 'A vendor API integration is exploited, allowing unauthorized access to your customer database.', details: ['API keys were not rotated', 'Thousands of records accessed', 'Vendor blames your implementation', 'Breach discovered by security researcher'], prompts: ['How do we determine scope?', 'What immediate containment is needed?', 'Who is liable for the breach?', 'How do we communicate with customers?'], realWorldCheck: ['API security practices?', 'Key rotation policies?', 'Shared responsibility agreements?'] },
+  
+  // Operational (11-20)
+  { id: 11, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Logistics Partner Strike', frontDescription: 'Your primary logistics partner drivers go on strike. All deliveries halt immediately.', details: ['Strike expected to last 2+ weeks', 'Peak season with 3x normal volume', 'Perishable goods in transit', 'Competitors also affected'], prompts: ['What inventory is currently in transit?', 'Do we have secondary logistics contracts?', 'Which customers get priority?', 'Can we use customer pickup options?'], realWorldCheck: ['Alternative carrier contracts?', 'Strike contingency plans?', 'Customer communication templates?'] },
+  { id: 12, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Manufacturing Quality Escape', frontDescription: 'Your contract manufacturer shipped defective products for 3 months. Safety recall required.', details: ['50,000 units in market affected', 'Root cause still unknown', 'Manufacturer claims specs were followed', 'Regulatory notification required'], prompts: ['How do we identify affected units?', 'What is our recall strategy?', 'Who bears the cost?', 'How do we prevent customer injuries?'], realWorldCheck: ['Product liability insurance?', 'Quality audit records?', 'Recall cost allocation in contract?'] },
+  { id: 13, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Data Center Cooling Failure', frontDescription: 'Your colocation provider cooling system fails. Servers overheating, emergency shutdown imminent.', details: ['Facility at critical temperature', 'Your DR site is same provider', 'Generator fuel running low', 'Other customers evacuating equipment'], prompts: ['What is our graceful shutdown procedure?', 'Can we failover to cloud?', 'Which systems are most critical?', 'How do we communicate the outage?'], realWorldCheck: ['Geographic diversity of infrastructure?', 'Warm standby capabilities?', 'Data backup verification?'] },
+  { id: 14, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Cleaning Service Contamination', frontDescription: 'Facility cleaning vendor used wrong chemicals, contaminating production area.', details: ['Three production lines affected', 'Products must be destroyed', '2-week decontamination required', 'FDA notification required'], prompts: ['How do we prevent product shipment?', 'Can we shift to other facilities?', 'What is contamination response?', 'How do we communicate with regulators?'], realWorldCheck: ['Vendor insurance requirements?', 'Chemical handling protocols?', 'Regulatory reporting timelines?'] },
+  { id: 15, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Security Guard No-Show', frontDescription: 'Security vendor fails to staff overnight shift. Facility unsecured for 8 hours.', details: ['Discovered when day shift arrives', 'Loading dock was open', 'High-value inventory present', 'Unknown if theft occurred'], prompts: ['How do we verify nothing was taken?', 'What incident documentation is needed?', 'Should we close facility for audit?', 'What backup security exists?'], realWorldCheck: ['Security vendor SLAs?', 'Backup security arrangements?', 'Insurance for theft and loss?'] },
+  { id: 16, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Telecom Network Outage', frontDescription: 'Your telecommunications provider has regional network failure. Voice and data circuits down.', details: ['Headquarters and 3 branches affected', 'Provider estimates 24-hour repair', 'No cellular backup configured', 'Customer calls going unanswered'], prompts: ['How do employees communicate?', 'How do customers reach us?', 'What transactions are frozen?', 'Can we work from other locations?'], realWorldCheck: ['Telecom redundancy in place?', 'Cellular backup plans?', 'Customer communication alternatives?'] },
+  { id: 17, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Catering Food Safety Incident', frontDescription: 'Multiple employees sick after vendor-catered company event. Health department investigating.', details: ['27 employees affected', 'Three hospitalized', 'Event was mandatory attendance', 'Media asking questions'], prompts: ['How do we support affected employees?', 'What documentation do we need?', 'How do we communicate internally?', 'What is our media response?'], realWorldCheck: ['Event liability coverage?', 'Vendor health certifications?', 'Workers comp implications?'] },
+  { id: 18, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Print Vendor Data Leak', frontDescription: 'Your print and mail vendor sent customer statements to wrong addresses.', details: ['2,000 customers affected', 'Statements contain account numbers', 'Some went to completely wrong people', 'Vendor has history of issues'], prompts: ['How do we notify affected customers?', 'What remediation do we offer?', 'How do we recall misdirected mail?', 'Should we terminate the vendor?'], realWorldCheck: ['Vendor E&O coverage?', 'Customer notification requirements?', 'Regulatory reporting obligations?'] },
+  { id: 19, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'HVAC Contractor Floods Server Room', frontDescription: 'HVAC maintenance error causes water damage to primary server room.', details: ['Primary and backup servers affected', 'Water damage still being assessed', 'Building systems also impacted', 'Insurance adjuster en route'], prompts: ['What data was on local servers?', 'Can we operate from cloud backup?', 'How do we document damage?', 'What is replacement timeline?'], realWorldCheck: ['Equipment insurance coverage?', 'Data backup and recovery tested?', 'Vendor liability limits adequate?'] },
+  { id: 20, category: 'operational', categoryLabel: 'Vendor Operational Failure', title: 'Staffing Agency Compliance Failure', frontDescription: 'Staffing agency failed to complete background checks on temporary workers in sensitive areas.', details: ['12 temps working without clearance', 'One has disqualifying history', 'Regulatory compliance at risk', 'Agency minimizing exposure'], prompts: ['Which temps are affected?', 'What access did they have?', 'How do we notify regulators?', 'What is our remediation plan?'], realWorldCheck: ['Temp worker verification policies?', 'Agency audit requirements?', 'Regulatory penalties exposure?'] },
+  
+  // Supply Chain (21-25)
+  { id: 21, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Port Congestion Crisis', frontDescription: 'Major port congestion delays inbound shipments by 4-6 weeks. Peak season approaching.', details: ['Container ships anchored offshore', '60% of inventory in transit', 'Air freight cost prohibitive', 'Competitors facing same issue'], prompts: ['Which products will stock out?', 'Can we air freight critical items?', 'How do we allocate inventory?', 'What customer communication is needed?'], realWorldCheck: ['Supply chain insurance?', 'Alternative port arrangements?', 'Customer contract flexibility?'] },
+  { id: 22, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Rare Earth Export Ban', frontDescription: 'New export restrictions cut off supply of critical rare earth materials with no domestic alternative.', details: ['Current inventory lasts 6 weeks', 'Product redesign would take 18 months', 'Ban effective immediately', 'Competitors equally affected'], prompts: ['Can we source from other countries?', 'What is our inventory rationing plan?', 'Which products do we prioritize?', 'Can we acquire existing stockpiles?'], realWorldCheck: ['Geopolitical risk assessments?', 'Material substitution research?', 'Long-term supply contracts?'] },
+  { id: 23, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Freight Carrier Bankruptcy', frontDescription: 'Your primary freight carrier files bankruptcy and ceases operations immediately.', details: ['Shipments in transit stranded', 'Prepaid freight unrecoverable', 'Peak season capacity tight', 'Carrier had lowest rates'], prompts: ['Where are our shipments now?', 'How do we recover stranded goods?', 'What backup carriers can we use?', 'How do we absorb rate increases?'], realWorldCheck: ['Carrier financial monitoring?', 'Transportation contract terms?', 'Prepayment risk policies?'] },
+  { id: 24, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Agricultural Commodity Shortage', frontDescription: 'Disease outbreak destroys 40% of key agricultural input. Global shortage expected for 2 years.', details: ['Commodity prices already spiking', 'Alternative ingredients change product', 'Customer taste expectations at risk', 'All competitors affected'], prompts: ['Can we reformulate products?', 'How do we secure remaining supply?', 'What price increases do we pass on?', 'How do we communicate changes?'], realWorldCheck: ['Commodity hedging in place?', 'Formula flexibility?', 'Long-term supplier relationships?'] },
+  { id: 25, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Trade Tariff Shock', frontDescription: 'New tariffs increase import costs by 25% overnight. Competitor sources domestically.', details: ['Affects 70% of your BOM', 'Passing costs loses customers', 'Absorbing costs loses margin', 'Domestic alternatives limited'], prompts: ['Can we shift to domestic suppliers?', 'What is our pricing strategy?', 'Which products most affected?', 'How do we communicate increases?'], realWorldCheck: ['Tariff exclusion applications?', 'Supplier country diversification?', 'Customer contract price clauses?'] },
+];// PART 2: Scenarios 26-50 and All Wild Cards
+
+// Continue scenarios array from Part 1
+const fullScenariosP2 = [
+  // Supply Chain continued (26-30)
+  { id: 26, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Supplier Acquisition by Competitor', frontDescription: 'Your critical supplier is acquired by your largest competitor. Supply termination expected.', details: ['90-day termination notice received', 'Alternative qualification takes 12 months', 'Pricing already increasing', 'Critical component with no substitute'], prompts: ['Can we fast-track new suppliers?', 'Should we stockpile inventory?', 'Can we acquire another supplier?', 'What is our redesign timeline?'], realWorldCheck: ['Supplier market concentration?', 'Change of control clauses?', 'Strategic supplier agreements?'] },
+  { id: 27, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Conflict Mineral Violation', frontDescription: 'Audit reveals conflict minerals in supply chain despite vendor certifications.', details: ['Vendor provided false documentation', 'Affects products sold to government', 'Debarment risk significant', 'Public disclosure required'], prompts: ['How do we verify other suppliers?', 'What is our remediation plan?', 'How do we notify customers?', 'What legal action against vendor?'], realWorldCheck: ['Supply chain due diligence?', 'Vendor audit programs?', 'Conflict mineral compliance?'] },
+  { id: 28, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Pandemic Factory Closure', frontDescription: 'Disease outbreak forces extended closure of supplier factory. Duration unknown.', details: ['Region under strict lockdown', 'No remote work possible', 'Other suppliers in same region', 'Could last weeks to months'], prompts: ['What is our inventory runway?', 'Can suppliers in other regions help?', 'How do we ration supply?', 'What products do we discontinue?'], realWorldCheck: ['Geographic supplier diversity?', 'Pandemic clauses in contracts?', 'Force majeure definitions?'] },
+  { id: 29, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'Energy Price Spike', frontDescription: 'Energy costs triple for suppliers who demand immediate price increases or will halt production.', details: ['Affects all suppliers in region', 'Your contracts prohibit mid-term increases', 'Some threatening to stop shipments', 'Customer contracts have fixed pricing'], prompts: ['Which suppliers are most critical?', 'Can we help with energy costs?', 'How do we renegotiate contracts?', 'What margin can we absorb?'], realWorldCheck: ['Price adjustment mechanisms?', 'Supplier financial monitoring?', 'Energy hedging for suppliers?'] },
+  { id: 30, category: 'supply', categoryLabel: 'Supply Chain Disruption', title: 'IP Theft by Supplier', frontDescription: 'Supplier employee steals designs and starts competing business selling copies at lower prices.', details: ['Copies appearing in market', 'Supplier denies responsibility', 'Legal action will take years', 'Customers asking about alternatives'], prompts: ['How do we differentiate from copies?', 'What legal action do we take?', 'How do we protect remaining IP?', 'Should we accelerate new designs?'], realWorldCheck: ['IP protection in contracts?', 'Trade secret safeguards?', 'Competitive intelligence monitoring?'] },
+  
+  // SMB (31-40)
+  { id: 31, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Vendor Owner Hospitalized', frontDescription: 'Your critical SMB vendor owner is hospitalized unexpectedly. No succession plan exists.', details: ['Owner handled all key relationships', 'No documented processes', 'Staff unsure how to proceed', 'Orders pending delivery this week'], prompts: ['Who at vendor can we work with?', 'Can their staff continue?', 'How quickly can we find alternates?', 'What support can we provide?'], realWorldCheck: ['SMB vendor succession plans?', 'Key person dependencies mapped?', 'Vendor process documentation?'] },
+  { id: 32, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'SMB Cash Flow Crisis', frontDescription: 'Your SMB supplier cannot make payroll. Production may halt tomorrow.', details: ['Bank refused credit line renewal', 'Three weeks from delivery', 'No completed inventory to ship', 'Total exposure is $400K'], prompts: ['Can we prepay to keep them running?', 'Should we acquire them?', 'Can we take over production?', 'How do we secure our tooling?'], realWorldCheck: ['Supplier financial monitoring?', 'Prepayment risk policies?', 'Asset protection clauses?'] },
+  { id: 33, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Family Business Succession Crisis', frontDescription: 'Your longtime supplier children refuse to take over. Owner retiring in 6 months.', details: ['No plan to sell business', 'Specialized capability hard to find', 'They produce 30% of your volume', 'Owner health is declining'], prompts: ['Can we help find a buyer?', 'Should we acquire them?', 'Can we transfer knowledge elsewhere?', 'How long to qualify alternatives?'], realWorldCheck: ['Supplier succession monitoring?', 'M&A capability?', 'Knowledge transfer requirements?'] },
+  { id: 34, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Natural Disaster Destroys Facility', frontDescription: 'Tornado destroys SMB supplier facility. No insurance for specialized equipment.', details: ['Total loss of machinery', 'Equipment lead time 9 months', 'They cannot afford replacement', 'Only source for this component'], prompts: ['Can we fund their recovery?', 'Can we source equipment faster?', 'Do we have usable inventory?', 'Can we redesign around this part?'], realWorldCheck: ['Supplier insurance requirements?', 'Emergency funding mechanisms?', 'Component redesign capability?'] },
+  { id: 35, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Sudden Retirement Closure', frontDescription: 'SMB vendor announces retirement, closing in 90 days. Refuses to sell business.', details: ['Your tooling is at their facility', 'Processes undocumented', 'Alternative vendors need 6 months', 'Key employees looking for jobs'], prompts: ['Can we extend their timeline?', 'How do we get our tooling?', 'Can we hire their employees?', 'What documentation can we get?'], realWorldCheck: ['Tooling ownership and access?', 'Process documentation requirements?', 'Employee non-solicit terms?'] },
+  { id: 36, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Ransomware Hits Unprotected SMB', frontDescription: 'Your SMB supplier has ransomware. No backups. They stored your CAD files.', details: ['No IT security in place', 'Cannot afford ransom', 'Your designs may be lost', 'Unknown if data was exfiltrated'], prompts: ['What data did they have?', 'Can we help with recovery?', 'How do we assess our exposure?', 'Should we notify our customers?'], realWorldCheck: ['Vendor security requirements?', 'Data handling agreements?', 'Cyber liability coverage?'] },
+  { id: 37, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Immigration Enforcement Action', frontDescription: 'Immigration raid removes 60% of SMB supplier workforce. Production halted.', details: ['Owner also detained', 'Community tensions high', 'Media covering the story', 'Political sensitivities involved'], prompts: ['What is our public statement?', 'Can remaining staff operate?', 'How long can we wait?', 'What is our backup plan?'], realWorldCheck: ['Supplier labor compliance audits?', 'Reputational risk management?', 'Alternative supplier readiness?'] },
+  { id: 38, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Bank Calls Loan Due', frontDescription: 'Your SMB supplier bank calls loan due. Assets including your WIP to be liquidated.', details: ['All inventory is collateral', 'Liquidator will not negotiate', 'Timeline is 30 days', 'Your tooling also at risk'], prompts: ['Can we buy out the loan?', 'Can we purchase from liquidator?', 'How do we protect our IP/tooling?', 'What legal options do we have?'], realWorldCheck: ['Security interests documented?', 'Supplier financial covenants?', 'Legal recourse for WIP?'] },
+  { id: 39, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Divorce Disrupts Business', frontDescription: 'Your supplier owners divorcing. Both must sign but refuse to communicate.', details: ['Business decisions frozen', 'Court proceedings ongoing', 'Operations in limbo', 'Employees leaving'], prompts: ['Can we get both to agree?', 'What decisions are blocked?', 'Can we help separate business?', 'How do we protect our interests?'], realWorldCheck: ['Supplier governance structure?', 'Contract authority clauses?', 'Legal standby support?'] },
+  { id: 40, category: 'smb', categoryLabel: 'SMB Vendor Failure', title: 'Sudden Death of Owner', frontDescription: 'Your SMB supplier owner dies suddenly. Estate in probate, no clear successor.', details: ['No designated successor', 'Staff unsure what to do', 'Bank accounts frozen', 'Orders in production'], prompts: ['Who can authorize shipments?', 'Can we help staff continue?', 'How do we work with estate?', 'What is our inventory position?'], realWorldCheck: ['Supplier succession documentation?', 'Estate planning requirements?', 'Emergency contact protocols?'] },
+  
+  // Compliance (41-50)
+  { id: 41, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'Vendor Fails DORA Audit', frontDescription: 'Your critical vendor cannot provide required operational resilience documentation.', details: ['No documented BCP or IRP', 'Regulator wants evidence in 5 days', 'Vendor serves 25% of customers', 'Switching takes 6+ months'], prompts: ['Can we help vendor create docs?', 'What evidence can we provide?', 'Do we accept risk or transition?', 'How do we prevent with other vendors?'], realWorldCheck: ['Vendor audit-ready documentation?', 'Resilience evidence gaps?', 'Remediation timelines?'] },
+  { id: 42, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'GDPR Violation by Vendor', frontDescription: 'Your vendor fined for GDPR violations involving your customer data processed outside EU.', details: ['Customers demanding answers', 'Regulator may investigate you', 'Contract said they were compliant', 'Notification deadline approaching'], prompts: ['What data was involved?', 'How do we notify customers?', 'What is our regulatory exposure?', 'How do we verify other vendors?'], realWorldCheck: ['DPA requirements in contracts?', 'Vendor compliance verification?', 'Data flow documentation?'] },
+  { id: 43, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'SOX Audit Material Weakness', frontDescription: 'Auditors find material weakness in vendor-managed financial process.', details: ['Affects revenue recognition', 'Disclosure deadline in 2 weeks', 'Remediation is complex and costly', 'Board notification required'], prompts: ['Can we remediate in time?', 'What is disclosure language?', 'How do we explain to board?', 'Can we bring process in-house?'], realWorldCheck: ['SOX control documentation?', 'Vendor audit rights?', 'Material weakness response plan?'] },
+  { id: 44, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'HIPAA Breach via Vendor', frontDescription: 'Your business associate exposes PHI through unsecured cloud storage.', details: ['10,000 patient records exposed', '60-day notification deadline', 'OCR investigation likely', 'Vendor lacks breach insurance'], prompts: ['How do we notify patients?', 'What support do we offer?', 'How do we handle media?', 'What is our OCR strategy?'], realWorldCheck: ['BAA requirements verified?', 'Vendor security validated?', 'Breach notification procedures?'] },
+  { id: 45, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'Export Control Violation', frontDescription: 'Vendor shipped controlled technology to embargoed country using your export license.', details: ['Appears to be deliberate evasion', 'BIS investigation initiated', 'Other customers may be affected', 'Criminal penalties possible'], prompts: ['How do we cooperate with BIS?', 'What is our legal exposure?', 'How do we audit other vendors?', 'Should we self-disclose?'], realWorldCheck: ['Export control due diligence?', 'Vendor compliance certifications?', 'Legal defense prepared?'] },
+  { id: 46, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'Modern Slavery Discovery', frontDescription: 'Audit finds forced labor conditions at your tier-3 supplier.', details: ['Workers from vulnerable populations', 'Supplier was not on your radar', 'NGO threatening media campaign', 'Customer contracts require clean supply'], prompts: ['How deep does this go?', 'What is our remediation plan?', 'How do we verify other tiers?', 'What is our public response?'], realWorldCheck: ['Supply chain transparency?', 'Tier-n audit programs?', 'Remediation support capability?'] },
+  { id: 47, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'Environmental Permit Revoked', frontDescription: 'Your supplier loses environmental permits. Production must halt immediately.', details: ['Violations accumulated over years', 'No timeline for reinstatement', 'Only qualified supplier', 'Moving production requires permits'], prompts: ['Can we help them remediate?', 'Can we find alternative processes?', 'How do we handle orders in progress?', 'What is permit timeline?'], realWorldCheck: ['Supplier environmental monitoring?', 'Permit contingency requirements?', 'Alternative process capability?'] },
+  { id: 48, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'FDA Warning Letter', frontDescription: 'Your contract manufacturer receives FDA warning letter citing products you contracted.', details: ['Production must stop', 'Products may need recall', 'Re-inspection timeline unknown', 'Other customers leaving'], prompts: ['What products are affected?', 'Is recall necessary?', 'Can we move production?', 'How do we communicate with FDA?'], realWorldCheck: ['cGMP audit programs?', 'Quality agreement terms?', 'Regulatory liaison capability?'] },
+  { id: 49, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'Accessibility Lawsuit Names You', frontDescription: 'Vendor software sued for ADA violations. You are named as co-defendant.', details: ['Product widely deployed', 'Class action filed', 'Vendor claims your configuration', 'Remediation requires major rework'], prompts: ['What is our legal strategy?', 'How do we allocate responsibility?', 'What does remediation cost?', 'How do we assess other tools?'], realWorldCheck: ['Vendor accessibility warranties?', 'Accessibility testing programs?', 'Indemnification coverage?'] },
+  { id: 50, category: 'compliance', categoryLabel: 'Regulatory/Compliance', title: 'Sanctions List Addition', frontDescription: 'Your vendor added to OFAC sanctions list. Must cease all dealings immediately.', details: ['Payments in transit', 'Critical components in production', 'No warning given', 'Wind-down license needed'], prompts: ['How do we stop payments?', 'Can we recover WIP?', 'How do we get wind-down license?', 'What is alternative source?'], realWorldCheck: ['Sanctions screening program?', 'License application procedures?', 'Payment system controls?'] }
+];
+
+// Combine all full scenarios
+const fullScenarios = [...fullScenariosP1, ...fullScenariosP2];
 
 // Demo wild cards (12 - 2 per category)
 const demoWildCards = [
   { id: 1, category: 'resource', categoryLabel: 'Resource Loss', title: 'Key Decision Maker Unavailable', description: 'Your BC lead is unreachable for the next 2 hours.', consider: ['Who has backup authority?', 'What decisions can wait?', 'Are delegation protocols documented?'] },
   { id: 7, category: 'resource', categoryLabel: 'Resource Loss', title: 'Budget Frozen', description: 'CFO just froze all discretionary spending. Recovery costs cannot be approved through normal channels.', consider: ['What can you do without spending?', 'What absolutely requires funding?', 'How do you get emergency approval?'] },
   { id: 2, category: 'time', categoryLabel: 'Time Pressure', title: 'Media Inquiry Incoming', description: 'A journalist is calling in 30 minutes asking about this vendor disruption.', consider: ['What do you say?', 'What do you hold back?', 'Who speaks to media?'] },
-  { id: 8, category: 'time', categoryLabel: 'Time Pressure', title: 'Board Meeting Tomorrow', description: 'The board wants a full briefing on this situation at tomorrow morning\'s meeting.', consider: ['What can you know by then?', 'What decisions do you need?', 'What are you asking for?'] },
+  { id: 8, category: 'time', categoryLabel: 'Time Pressure', title: 'Board Meeting Tomorrow', description: 'The board wants a full briefing on this situation at tomorrow morning meeting.', consider: ['What can you know by then?', 'What decisions do you need?', 'What are you asking for?'] },
   { id: 3, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Second Vendor Also Impacted', description: 'A second vendor uses the same sub-supplier. They are also disrupted.', consider: ['How did you miss this?', 'What is your third option?', 'How do you prioritize?'] },
   { id: 9, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Backup System Fails', description: 'When you activate your backup vendor, you discover they also have capacity issues.', consider: ['What is your backup to the backup?', 'Can you get partial capacity?', 'How do you ration resources?'] },
   { id: 4, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Customer Panic Spiral', description: 'Your three largest customers threaten to leave. They want proof of recovery in 24 hours.', consider: ['What evidence can you provide?', 'What promises are realistic?', 'Who communicates with them?'] },
-  { id: 10, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Executive Pressure', description: 'The CEO demands you fix this in 24 hours or they\'ll "find someone who can."', consider: ['What is realistic?', 'How do you manage up?', 'What help do you need?'] },
+  { id: 10, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Executive Pressure', description: 'The CEO demands you fix this in 24 hours or they will find someone who can.', consider: ['What is realistic?', 'How do you manage up?', 'What help do you need?'] },
   { id: 5, category: 'fog', categoryLabel: 'Information Fog', title: 'Conflicting Information', description: 'Vendor says 6 hours. Their support says 3 days. Social media says weeks.', consider: ['How do you decide with bad info?', 'What is your planning assumption?', 'How do you verify?'] },
   { id: 11, category: 'fog', categoryLabel: 'Information Fog', title: 'Vendor Gone Silent', description: 'Your vendor has stopped responding. No status updates, no returned calls for 4 hours.', consider: ['What do you assume?', 'How do you plan without info?', 'Who else can you contact?'] },
   { id: 6, category: 'external', categoryLabel: 'External Shock', title: 'Concurrent Internal Crisis', description: 'While managing this vendor failure, your own facility experiences an unrelated incident.', consider: ['How do you split resources?', 'Which crisis takes priority?', 'Who leads each response?'] },
   { id: 12, category: 'external', categoryLabel: 'External Shock', title: 'Competitor Advantage', description: 'Your competitor announces they were not affected and is actively poaching your customers.', consider: ['How did they avoid it?', 'What do you tell customers?', 'How do you respond publicly?'] }
 ];
 
-const fullWildCards = [...demoWildCards];
+// Full wild cards (48 total - 8 per category)
+const fullWildCards = [
+  // Resource Loss (8)
+  { id: 1, category: 'resource', categoryLabel: 'Resource Loss', title: 'Key Decision Maker Unavailable', description: 'Your BC lead is unreachable for the next 2 hours.', consider: ['Who has backup authority?', 'What decisions can wait?', 'Are delegation protocols documented?'] },
+  { id: 2, category: 'resource', categoryLabel: 'Resource Loss', title: 'Budget Frozen', description: 'CFO just froze all discretionary spending. Recovery costs cannot be approved.', consider: ['What can you do without spending?', 'What absolutely requires funding?', 'How do you get emergency approval?'] },
+  { id: 3, category: 'resource', categoryLabel: 'Resource Loss', title: 'Crisis Team Exhausted', description: 'Your team has been working 16-hour days for a week. Mistakes are increasing.', consider: ['How do you rotate staff?', 'What decisions can wait?', 'Who are your backup people?'] },
+  { id: 4, category: 'resource', categoryLabel: 'Resource Loss', title: 'Legal Counsel Conflicted', description: 'Your law firm also represents the vendor and must withdraw from helping you.', consider: ['Do you have backup counsel?', 'What decisions are stuck?', 'How fast can new counsel ramp up?'] },
+  { id: 5, category: 'resource', categoryLabel: 'Resource Loss', title: 'War Room Unavailable', description: 'Your crisis management center is being used for another emergency.', consider: ['Where do you relocate?', 'Do you have the right technology?', 'How do you notify the team?'] },
+  { id: 6, category: 'resource', categoryLabel: 'Resource Loss', title: 'Insurance Claim Denied', description: 'Your insurer denies coverage citing an exclusion in the policy.', consider: ['What is your appeal strategy?', 'How do you fund recovery?', 'What outside help do you need?'] },
+  { id: 7, category: 'resource', categoryLabel: 'Resource Loss', title: 'Communication Tools Down', description: 'Slack and email are affected by this same outage. Teams cannot coordinate.', consider: ['What is your backup channel?', 'How do you reach external parties?', 'Can you use personal devices?'] },
+  { id: 8, category: 'resource', categoryLabel: 'Resource Loss', title: 'Subject Matter Expert Quit', description: 'The only person who understood this vendor relationship resigned last week.', consider: ['Where is their documentation?', 'Who else has partial knowledge?', 'Can you bring them back as consultant?'] },
+  
+  // Time Pressure (8)
+  { id: 9, category: 'time', categoryLabel: 'Time Pressure', title: 'Media Inquiry Incoming', description: 'A journalist is calling in 30 minutes asking about this vendor disruption.', consider: ['What do you say?', 'What do you hold back?', 'Who speaks to media?'] },
+  { id: 10, category: 'time', categoryLabel: 'Time Pressure', title: 'Board Meeting Tomorrow', description: 'The board wants a full briefing on this situation at tomorrow morning meeting.', consider: ['What can you know by then?', 'What decisions do you need?', 'What are you asking for?'] },
+  { id: 11, category: 'time', categoryLabel: 'Time Pressure', title: 'Product Launch Tomorrow', description: 'You have a major product launch tomorrow that depends on this vendor.', consider: ['Can you delay the launch?', 'What is partial launch option?', 'What is cost of delay?'] },
+  { id: 12, category: 'time', categoryLabel: 'Time Pressure', title: 'Regulatory Filing Due', description: 'You have a regulatory filing due in 48 hours that requires data from this vendor.', consider: ['Can you get an extension?', 'What is the penalty for missing?', 'Can you file with partial data?'] },
+  { id: 13, category: 'time', categoryLabel: 'Time Pressure', title: 'End of Quarter', description: 'It is the last week of quarter and this affects revenue recognition.', consider: ['What deals are at risk?', 'Can you close manually?', 'What is revenue impact?'] },
+  { id: 14, category: 'time', categoryLabel: 'Time Pressure', title: 'Holiday Weekend Starting', description: 'This is happening right before a 3-day holiday weekend.', consider: ['Who is available?', 'What can wait until Tuesday?', 'What must be done now?'] },
+  { id: 15, category: 'time', categoryLabel: 'Time Pressure', title: 'Payroll Processing Due', description: 'Payroll must be processed in 24 hours and your payroll vendor is the one affected.', consider: ['Can you process manually?', 'Do you have the data?', 'What do you tell employees?'] },
+  { id: 16, category: 'time', categoryLabel: 'Time Pressure', title: 'Contract Renewal Deadline', description: 'Your biggest customer contract expires in 72 hours and this affects the renewal.', consider: ['Can you get an extension?', 'What can you promise?', 'Who handles the negotiation?'] },
+  
+  // Cascading Failures (8)
+  { id: 17, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Second Vendor Also Impacted', description: 'A second vendor uses the same sub-supplier. They are also disrupted.', consider: ['How did you miss this?', 'What is your third option?', 'How do you prioritize?'] },
+  { id: 18, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Backup System Fails', description: 'When you activate your backup vendor, you discover they also have capacity issues.', consider: ['What is backup to backup?', 'Can you get partial capacity?', 'How do you ration resources?'] },
+  { id: 19, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Internal System Buckles', description: 'The stress on your systems from the workaround causes your own system to fail.', consider: ['What is the new priority?', 'How do you handle both?', 'What do you triage?'] },
+  { id: 20, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Key Customer Defects', description: 'Your largest customer announces they are moving to a competitor.', consider: ['Can you save the account?', 'What would it take?', 'What do you tell other customers?'] },
+  { id: 21, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Key Employee Resigns', description: 'Your incident commander just resigned citing this as the last straw.', consider: ['Who takes over?', 'What knowledge walks out?', 'How do you transition?'] },
+  { id: 22, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Supply Chain Domino', description: 'Your backup supplier gets materials from the same affected source.', consider: ['How deep does this go?', 'Where can you break the chain?', 'What do you not know?'] },
+  { id: 23, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Partner Threatens to Drop You', description: 'Your distribution partner will drop your products if this continues another week.', consider: ['What do they need?', 'Can you meet their timeline?', 'What is replacement cost?'] },
+  { id: 24, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Credit Rating Downgrade Watch', description: 'Rating agency puts you on watch negative due to operational disruption.', consider: ['What do you tell them?', 'What is capital impact?', 'How do you restore confidence?'] },
+  
+  // Stakeholder Complications (8)
+  { id: 25, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Customer Panic Spiral', description: 'Your three largest customers threaten to leave. They want proof of recovery in 24 hours.', consider: ['What evidence can you provide?', 'What promises are realistic?', 'Who communicates with them?'] },
+  { id: 26, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Executive Pressure', description: 'The CEO demands you fix this in 24 hours or they will find someone who can.', consider: ['What is realistic?', 'How do you manage up?', 'What help do you need?'] },
+  { id: 27, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Board Member Conflict', description: 'A board member has significant investment in the vendor.', consider: ['How does this affect decisions?', 'What disclosures are needed?', 'Who makes the call?'] },
+  { id: 28, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Union Involvement', description: 'The union claims this is a health and safety issue and threatens action.', consider: ['What are their concerns?', 'Who negotiates with them?', 'What are contract terms?'] },
+  { id: 29, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Investor Emergency Call', description: 'Your largest institutional investor wants an emergency call to discuss.', consider: ['Who takes the call?', 'What can you say?', 'What can you not say?'] },
+  { id: 30, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Government Customer Demands Briefing', description: 'Your government customer demands formal briefing within 24 hours.', consider: ['Who has clearance?', 'What do they need to know?', 'What are contract requirements?'] },
+  { id: 31, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Internal Blame Game', description: 'Another business unit publicly blames your team for the vendor selection.', consider: ['How do you handle it?', 'What is the documentation?', 'Who mediates?'] },
+  { id: 32, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Whistleblower Emerges', description: 'An employee claims they warned about this vendor risk and were ignored.', consider: ['What is the record?', 'Who investigates?', 'What are legal risks?'] },
+  
+  // Information Fog (8)
+  { id: 33, category: 'fog', categoryLabel: 'Information Fog', title: 'Conflicting Information', description: 'Vendor says 6 hours. Their support says 3 days. Social media says weeks.', consider: ['How do you decide with bad info?', 'What is planning assumption?', 'How do you verify?'] },
+  { id: 34, category: 'fog', categoryLabel: 'Information Fog', title: 'Vendor Gone Silent', description: 'Your vendor has stopped responding. No updates, no returned calls for 4 hours.', consider: ['What do you assume?', 'How do you plan without info?', 'Who else can you contact?'] },
+  { id: 35, category: 'fog', categoryLabel: 'Information Fog', title: 'Rumors on Social Media', description: 'Inaccurate information about the incident is spreading on social media.', consider: ['Do you respond?', 'How do you correct it?', 'What is official statement?'] },
+  { id: 36, category: 'fog', categoryLabel: 'Information Fog', title: 'Scope Still Unknown', description: 'You still do not know full scope and stakeholders are demanding answers.', consider: ['What can you say?', 'How do you set expectations?', 'When will you know more?'] },
+  { id: 37, category: 'fog', categoryLabel: 'Information Fog', title: 'Outdated Vendor Data', description: 'Your data about this vendor dependencies is 18 months old and unreliable.', consider: ['How do you verify?', 'What assumptions do you make?', 'How do you prevent next time?'] },
+  { id: 38, category: 'fog', categoryLabel: 'Information Fog', title: 'Language Barrier', description: 'The vendor technical staff only speaks a language your team does not.', consider: ['How do you get translation?', 'What might get lost?', 'Who can help?'] },
+  { id: 39, category: 'fog', categoryLabel: 'Information Fog', title: 'Contradictory Monitoring', description: 'Your monitoring shows service down but vendor insists it is up.', consider: ['Who is right?', 'How do you test?', 'What is causing discrepancy?'] },
+  { id: 40, category: 'fog', categoryLabel: 'Information Fog', title: 'Historical Data Lost', description: 'You need historical data to assess impact but logs were purged last month.', consider: ['What can you reconstruct?', 'Who else has records?', 'How do you estimate?'] },
+  
+  // External Shocks (8)
+  { id: 41, category: 'external', categoryLabel: 'External Shock', title: 'Concurrent Internal Crisis', description: 'While managing vendor failure, your own facility experiences unrelated incident.', consider: ['How do you split resources?', 'Which crisis takes priority?', 'Who leads each response?'] },
+  { id: 42, category: 'external', categoryLabel: 'External Shock', title: 'Competitor Advantage', description: 'Competitor announces they were not affected and is actively poaching customers.', consider: ['How did they avoid it?', 'What do you tell customers?', 'How do you respond publicly?'] },
+  { id: 43, category: 'external', categoryLabel: 'External Shock', title: 'Media Investigation', description: 'A journalist calls saying they are writing story about your vendor practices.', consider: ['Do you participate?', 'Who is spokesperson?', 'What is key message?'] },
+  { id: 44, category: 'external', categoryLabel: 'External Shock', title: 'Regulator Inquiry', description: 'Regulator calls asking questions about your vendor oversight practices.', consider: ['Who responds?', 'What documentation do you have?', 'What should you not say?'] },
+  { id: 45, category: 'external', categoryLabel: 'External Shock', title: 'Cyber Attack on You', description: 'While dealing with vendor issue, your own systems come under cyber attack.', consider: ['Are they related?', 'How do you prioritize?', 'Do you have resources for both?'] },
+  { id: 46, category: 'external', categoryLabel: 'External Shock', title: 'Weather Event Approaching', description: 'Major storm forecast to hit your region in 48 hours during this recovery.', consider: ['How does this change timeline?', 'What do you accelerate?', 'What do you defer?'] },
+  { id: 47, category: 'external', categoryLabel: 'External Shock', title: 'Industry-Wide Issue Emerges', description: 'Turns out this vendor issue affects your entire industry. Collective response forming.', consider: ['Do you join collective effort?', 'What do you share?', 'What is competitive advantage?'] },
+  { id: 48, category: 'external', categoryLabel: 'External Shock', title: 'Political Pressure', description: 'Local politician makes public statement criticizing your company response.', consider: ['Do you respond?', 'Who handles government relations?', 'What is the political context?'] }
+];
 
 const wildCardCategories = [
   { id: 'resource', label: 'Resource Loss', icon: 'resource' },
@@ -222,355 +352,3 @@ const getCategoryIcon = (category) => {
   const IconComponent = Icons[category];
   return IconComponent ? <IconComponent /> : null;
 };
-
-export default function VendorResilienceDeck() {
-  const [hasAccess, setHasAccess] = useState(false);
-  const [accessCode, setAccessCode] = useState('');
-  const [accessError, setAccessError] = useState('');
-  const [currentView, setCurrentView] = useState('main');
-  const [selectedScenario, setSelectedScenario] = useState(null);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [currentWildCard, setCurrentWildCard] = useState(null);
-  const [selectedWildCategory, setSelectedWildCategory] = useState(null);
-  const [showWildCardSelector, setShowWildCardSelector] = useState(false);
-  const [timerMinutes, setTimerMinutes] = useState(15);
-  const [timerSeconds, setTimerSeconds] = useState(0);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [timerInput, setTimerInput] = useState('15');
-
-  const availableScenarios = hasAccess ? fullScenarios : demoScenarios;
-  const availableWildCards = hasAccess ? fullWildCards : demoWildCards;
-
-  useEffect(() => {
-    let interval = null;
-    if (timerRunning) {
-      interval = setInterval(() => {
-        if (timerSeconds > 0) {
-          setTimerSeconds(timerSeconds - 1);
-        } else if (timerMinutes > 0) {
-          setTimerMinutes(timerMinutes - 1);
-          setTimerSeconds(59);
-        } else {
-          setTimerRunning(false);
-        }
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timerRunning, timerMinutes, timerSeconds]);
-
-  const validateAccessCode = () => {
-    if (accessCode.toUpperCase().startsWith('CS-DECK-') && accessCode.length >= 12) {
-      setHasAccess(true);
-      setAccessError('');
-      setCurrentView('main');
-    } else {
-      setAccessError('Invalid access code. Please check and try again.');
-    }
-  };
-
-  const drawRandomScenario = () => {
-    const randomIndex = Math.floor(Math.random() * availableScenarios.length);
-    setSelectedScenario(availableScenarios[randomIndex]);
-    setIsFlipped(false);
-    setCurrentWildCard(null);
-    setSelectedWildCategory(null);
-    setCurrentView('scenario');
-  };
-
-  const selectScenario = (scenario) => {
-    setSelectedScenario(scenario);
-    setIsFlipped(false);
-    setCurrentWildCard(null);
-    setSelectedWildCategory(null);
-    setCurrentView('scenario');
-  };
-
-  const drawWildCard = (categoryId) => {
-    const categoryCards = availableWildCards.filter(card => card.category === categoryId);
-    const randomIndex = Math.floor(Math.random() * categoryCards.length);
-    setCurrentWildCard(categoryCards[randomIndex]);
-    setSelectedWildCategory(categoryId);
-    setShowWildCardSelector(false);
-  };
-
-  const handleDrawAnother = () => {
-    if (currentWildCard) {
-      const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
-      const randomIndex = Math.floor(Math.random() * categoryCards.length);
-      setCurrentWildCard(categoryCards[randomIndex]);
-    }
-  };
-
-  const startTimer = () => {
-    const mins = parseInt(timerInput) || 15;
-    setTimerMinutes(mins);
-    setTimerSeconds(0);
-    setTimerRunning(true);
-  };
-
-  const resetTimer = () => {
-    setTimerRunning(false);
-    const mins = parseInt(timerInput) || 15;
-    setTimerMinutes(mins);
-    setTimerSeconds(0);
-  };
-
-  const clearWildCard = () => {
-    setCurrentWildCard(null);
-  };
-
-  const renderHeader = () => (
-    <div style={{ backgroundColor: '#fff', padding: '12px 24px', borderBottom: '3px solid #e86c3a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '40px' }} />
-      <div style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>Vendor Resilience Exercise Deck</div>
-    </div>
-  );
-
-  const renderFooter = () => (
-    <div style={{ backgroundColor: '#e0e0e0', padding: '16px 24px', marginTop: '40px', flexShrink: 0 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-        <div style={{ color: '#333', fontSize: '13px' }}>
-          www.ContinuityStrength.com/TPRM
-        </div>
-        <div style={{ color: '#333', fontSize: '13px' }}>
-          © Continuity Strength 2025
-        </div>
-        <div style={{ color: '#333', fontSize: '13px' }}>
-          Contact us at info@ContinuityStrength.com
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderMain = () => (
-    <div style={{ padding: '32px 24px', maxWidth: '600px', margin: '0 auto', flex: 1 }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '8px', color: '#333', fontSize: '28px' }}>Vendor Resilience Exercise Deck</h1>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '32px', fontSize: '15px' }}>Test your team's response to vendor failures. Identify gaps before crises hit.</p>
-      
-      {!hasAccess && (
-        <div style={{ backgroundColor: '#fff8f6', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e86c3a' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 12 wild cards</p>
-          <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
-        </div>
-      )}
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <button onClick={drawRandomScenario} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <Icons.dice /> Draw Random Scenario
-        </button>
-        <button onClick={() => setCurrentView('guide')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <Icons.list /> Browse Scenarios & Select
-        </button>
-        {!hasAccess && (
-          <button onClick={() => setCurrentView('access')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#fff', color: '#e86c3a', border: '2px solid #e86c3a', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-            <Icons.unlock /> Enter Access Code
-          </button>
-        )}
-      </div>
-      <div style={{ textAlign: 'center', marginTop: '32px' }}>
-        <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Get the full deck: 50 scenarios + 48 wild cards →</a>
-      </div>
-    </div>
-  );
-
-  const renderScenario = () => {
-    if (!selectedScenario) return null;
-    return (
-      <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', flex: 1 }}>
-        <div style={{ marginBottom: '16px' }}>
-          <button onClick={() => { setCurrentView('main'); setCurrentWildCard(null); setSelectedWildCategory(null); }} style={{ padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
-            <Icons.back /> Back to Deck
-          </button>
-        </div>
-
-        {/* Timer and Wild Card Button Row */}
-        <div style={{ marginBottom: '20px', padding: '12px 16px', backgroundColor: '#f8f8f8', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', position: 'relative' }}>
-          <span style={{ fontWeight: '600', fontSize: '14px', color: '#333' }}>Timer:</span>
-          <input type="number" value={timerInput} onChange={(e) => setTimerInput(e.target.value)} style={{ width: '50px', padding: '6px 8px', borderRadius: '4px', border: '1px solid #ddd', fontSize: '14px' }} min="1" max="60" />
-          <span style={{ fontSize: '14px', color: '#666' }}>min</span>
-          <button onClick={timerRunning ? () => setTimerRunning(false) : startTimer} style={{ padding: '6px 12px', backgroundColor: timerRunning ? '#666' : '#4caf50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px' }}>
-            {timerRunning ? <><Icons.pause /> Pause</> : <><Icons.play /> Start</>}
-          </button>
-          <button onClick={resetTimer} style={{ padding: '6px 12px', backgroundColor: '#f5f5f5', color: '#666', border: '1px solid #ddd', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px' }}>
-            <Icons.reset /> Reset
-          </button>
-          <span style={{ fontWeight: '700', fontSize: '20px', color: timerMinutes === 0 && timerSeconds < 60 ? '#f44336' : '#333' }}>
-            {String(timerMinutes).padStart(2, '0')}:{String(timerSeconds).padStart(2, '0')}
-          </span>
-          
-          {/* Wild Card Button - always visible */}
-          <div style={{ marginLeft: 'auto', position: 'relative' }}>
-            <button onClick={() => setShowWildCardSelector(!showWildCardSelector)} style={{ padding: '8px 16px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Icons.wildcard /> {currentWildCard ? 'Change Category' : 'Add Wild Card'}
-            </button>
-            
-            {/* Dropdown selector */}
-            {showWildCardSelector && (
-              <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '8px', padding: '12px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, width: '220px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#333' }}>Select Category</span>
-                  <button onClick={() => setShowWildCardSelector(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666', padding: '2px' }}><Icons.close /></button>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {wildCardCategories.map(cat => (
-                    <button key={cat.id} onClick={() => drawWildCard(cat.id)} style={{ padding: '8px 12px', backgroundColor: selectedWildCategory === cat.id ? '#fff8f6' : '#f8f8f8', border: selectedWildCategory === cat.id ? '1px solid #e86c3a' : '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#666' }}>{getCategoryIcon(cat.icon)}</span> {cat.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Cards container - side by side with fixed height */}
-        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', alignItems: 'stretch' }}>
-          {/* Scenario Card - fixed dimensions */}
-          <div style={{ width: '520px', flexShrink: 0 }}>
-            <div onClick={() => setIsFlipped(!isFlipped)} style={{ perspective: '1000px', cursor: 'pointer', height: '100%' }}>
-              <div style={{ position: 'relative', width: '100%', height: '580px', transition: 'transform 0.6s', transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
-                {/* Front of card */}
-                <div style={{ position: 'absolute', width: '100%', height: '580px', backfaceVisibility: 'hidden', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', border: '1px solid #eee', boxSizing: 'border-box' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                    <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
-                    <span style={{ fontSize: '12px', color: '#666', display: 'flex', alignItems: 'center', gap: '6px' }}>{getCategoryIcon(selectedScenario.category)} {selectedScenario.categoryLabel}</span>
-                  </div>
-                  <h2 style={{ fontSize: '24px', marginBottom: '16px', color: '#296ecb', fontWeight: '700' }}>{selectedScenario.title}</h2>
-                  <p style={{ fontSize: '16px', lineHeight: '1.7', color: '#444', flexGrow: 1 }}>{selectedScenario.frontDescription}</p>
-                  <div style={{ textAlign: 'center', marginTop: '24px', color: '#999', fontSize: '13px' }}>Click card to flip →</div>
-                  <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
-                </div>
-                {/* Back of card */}
-                <div style={{ position: 'absolute', width: '100%', height: '580px', backfaceVisibility: 'hidden', backgroundColor: '#fafafa', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', transform: 'rotateY(180deg)', overflow: 'auto', border: '1px solid #eee', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                    <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
-                  </div>
-                  <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>SCENARIO DETAILS</h3>
-                  <ul style={{ margin: '0 0 12px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
-                    {selectedScenario.details.map((detail, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{detail}</li>)}
-                  </ul>
-                  <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>DISCUSSION PROMPTS</h3>
-                  <ul style={{ margin: '0 0 12px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
-                    {selectedScenario.prompts.map((prompt, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{prompt}</li>)}
-                  </ul>
-                  <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>REAL-WORLD CHECK</h3>
-                  <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
-                    {selectedScenario.realWorldCheck.map((check, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{check}</li>)}
-                  </ul>
-                  {/* Lead gen message */}
-                  <div style={{ marginTop: 'auto' }}>
-                    <p style={{ fontSize: '11px', color: '#65b3cf', margin: '0 0 12px 0', lineHeight: '1.5', textAlign: 'center' }}>
-                      {leadGenMessages[selectedScenario.category]}
-                    </p>
-                    <div style={{ textAlign: 'center', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Wild Card - same fixed height */}
-          {currentWildCard && (
-            <div style={{ width: '520px', flexShrink: 0 }}>
-              <div style={{ backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', height: '580px', display: 'flex', flexDirection: 'column', border: '2px solid #e86c3a', boxSizing: 'border-box' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
-                  <span style={{ fontSize: '11px', padding: '4px 10px', backgroundColor: '#e86c3a', color: '#fff', borderRadius: '4px', fontWeight: '600' }}>WILD CARD</span>
-                </div>
-                <div style={{ marginBottom: '12px', color: '#666' }}>{getCategoryIcon(currentWildCard.category)}</div>
-                <h2 style={{ fontSize: '22px', marginBottom: '16px', color: '#333', fontWeight: '700' }}>{currentWildCard.title}</h2>
-                <p style={{ fontSize: '16px', lineHeight: '1.7', marginBottom: '16px', color: '#444' }}>{currentWildCard.description}</p>
-                <h3 style={{ fontSize: '13px', color: '#666', marginBottom: '8px', fontWeight: '700' }}>CONSIDER:</h3>
-                <ul style={{ margin: '0 0 20px 0', paddingLeft: '18px', fontSize: '14px', color: '#444', flexGrow: 1 }}>
-                  {currentWildCard.consider.map((item, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{item}</li>)}
-                </ul>
-                <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
-                  <button 
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (currentWildCard) {
-                        const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
-                        const randomIndex = Math.floor(Math.random() * categoryCards.length);
-                        setCurrentWildCard(categoryCards[randomIndex]);
-                      }
-                    }} 
-                    style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                  >
-                    <span style={{ pointerEvents: 'none', display: 'flex', alignItems: 'center' }}><Icons.refresh /></span> Draw Another
-                  </button>
-                  <button type="button" onClick={(e) => { e.stopPropagation(); clearWildCard(); }} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
-                    <Icons.close />
-                  </button>
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const renderGuide = () => (
-    <div style={{ padding: '24px', maxWidth: '700px', margin: '0 auto', flex: 1 }}>
-      <button onClick={() => setCurrentView('main')} style={{ marginBottom: '20px', padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
-        <Icons.back /> Back to Deck
-      </button>
-      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '32px', marginBottom: '16px' }} />
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Scenario Index</h2>
-        <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Click any scenario to begin exercise</p>
-      </div>
-      {scenarioCategories.map(category => {
-        const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
-        if (categoryScenarios.length === 0) return null;
-        return (
-          <div key={category.id} style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-              {getCategoryIcon(category.icon)} {category.label}
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {categoryScenarios.map(scenario => (
-                <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '12px 16px', backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '8px', cursor: 'pointer', textAlign: 'left', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ color: '#bbb', fontSize: '12px', minWidth: '28px', fontWeight: '500' }}>#{scenario.id}</span> {scenario.title}
-                </button>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-
-  const renderAccessEntry = () => (
-    <div style={{ padding: '32px 24px', maxWidth: '400px', margin: '0 auto', flex: 1 }}>
-      <button onClick={() => setCurrentView('main')} style={{ marginBottom: '24px', padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
-        <Icons.back /> Back
-      </button>
-      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '32px', marginBottom: '16px' }} />
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Enter Access Code</h2>
-        <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Unlock the full deck with 50 scenarios and 48 wild cards.</p>
-      </div>
-      <input type="text" value={accessCode} onChange={(e) => setAccessCode(e.target.value.toUpperCase())} placeholder="CS-DECK-XXXX" style={{ width: '100%', padding: '14px 16px', fontSize: '16px', border: '2px solid #ddd', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', letterSpacing: '2px', boxSizing: 'border-box' }} />
-      {accessError && <p style={{ color: '#f44336', textAlign: 'center', marginBottom: '16px', fontSize: '14px' }}>{accessError}</p>}
-      <button onClick={validateAccessCode} style={{ width: '100%', padding: '14px 24px', fontSize: '15px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Unlock Full Deck</button>
-      <div style={{ textAlign: 'center', marginTop: '24px' }}>
-        <p style={{ color: '#666', marginBottom: '8px', fontSize: '14px' }}>Don't have an access code?</p>
-        <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '600', fontSize: '14px' }}>Purchase the full deck →</a>
-      </div>
-    </div>
-  );
-
-  return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#fafafa', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', display: 'flex', flexDirection: 'column' }}>
-      {renderHeader()}
-      {currentView === 'main' && renderMain()}
-      {currentView === 'scenario' && renderScenario()}
-      {currentView === 'guide' && renderGuide()}
-      {currentView === 'access' && renderAccessEntry()}
-      {renderFooter()}
-    </div>
-  );
-}
