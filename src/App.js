@@ -231,7 +231,7 @@ const getCategoryIcon = (category) => {
   return IconComponent ? <IconComponent /> : null;
 };
 
-export default function VendorResilienceDeck() {
+function VendorResilienceDeck() {
   const [hasAccess, setHasAccess] = useState(false);
   const [accessCode, setAccessCode] = useState('');
   const [accessError, setAccessError] = useState('');
@@ -583,4 +583,4 @@ export default function VendorResilienceDeck() {
   );
 }
 
-export default App;
+export default VendorResilienceDeck;
