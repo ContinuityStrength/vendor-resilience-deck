@@ -481,14 +481,7 @@ export default function VendorResilienceDeck() {
                 <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
                   <button 
                     type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      const catId = currentWildCard.category;
-                      const cards = availableWildCards.filter(c => c.category === catId);
-                      const idx = Math.floor(Math.random() * cards.length);
-                      setCurrentWildCard(cards[idx]);
-                    }} 
+                    onClick={handleDrawAnother} 
                     style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                   >
                     <Icons.refresh /> Draw Another
