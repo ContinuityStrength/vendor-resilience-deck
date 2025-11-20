@@ -353,6 +353,23 @@ const getCategoryIcon = (category) => {
   const IconComponent = Icons[category];
   return IconComponent ? <IconComponent /> : null;
 };
+function App() {
+  const [hasAccess, setHasAccess] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
+  const [accessError, setAccessError] = useState('');
+  const [currentView, setCurrentView] = useState('main');
+  const [selectedScenario, setSelectedScenario] = useState(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [currentWildCard, setCurrentWildCard] = useState(null);
+  const [selectedWildCategory, setSelectedWildCategory] = useState(null);
+  const [showWildCardSelector, setShowWildCardSelector] = useState(false);
+  const [timerMinutes, setTimerMinutes] = useState(15);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerInput, setTimerInput] = useState('15');
+
+  const availableScenarios = hasAccess ? fullScenarios : demoScenarios;
+  const availableWildCards = hasAccess ?
 fullWildCards : demoWildCards;
 
   useEffect(() => {
