@@ -352,3 +352,403 @@ const getCategoryIcon = (category) => {
   const IconComponent = Icons[category];
   return IconComponent ? <IconComponent /> : null;
 };
+frontDescription: 'Your critical vendor cannot provide required operational resilience documentation. Regulators are asking.',
+    details: ['Vendor has no documented BCP or IRP', 'Regulator wants evidence in 5 business days', 'Vendor serves 25% of customer base', 'Switching vendors takes 6+ months'],
+    prompts: ['Can we help vendor create documentation?', 'What evidence can we provide regulators?', 'Do we accept risk or begin transition?', 'How do we prevent this with other vendors?'],
+    realWorldCheck: ['Which vendors have audit-ready documentation?', 'Gaps in your vendor resilience evidence?', 'Remediation timelines for non-compliant vendors?']
+  }
+];
+
+const fullScenarios = [...demoScenarios];
+
+// Demo wild cards (12 - 2 per category)
+const demoWildCards = [
+  { id: 1, category: 'resource', categoryLabel: 'Resource Loss', title: 'Key Decision Maker Unavailable', description: 'Your BC lead is unreachable for the next 2 hours.', consider: ['Who has backup authority?', 'What decisions can wait?', 'Are delegation protocols documented?'] },
+  { id: 7, category: 'resource', categoryLabel: 'Resource Loss', title: 'Budget Frozen', description: 'CFO just froze all discretionary spending. Recovery costs cannot be approved through normal channels.', consider: ['What can you do without spending?', 'What absolutely requires funding?', 'How do you get emergency approval?'] },
+  { id: 2, category: 'time', categoryLabel: 'Time Pressure', title: 'Media Inquiry Incoming', description: 'A journalist is calling in 30 minutes asking about this vendor disruption.', consider: ['What do you say?', 'What do you hold back?', 'Who speaks to media?'] },
+  { id: 8, category: 'time', categoryLabel: 'Time Pressure', title: 'Board Meeting Tomorrow', description: 'The board wants a full briefing on this situation at tomorrow morning\'s meeting.', consider: ['What can you know by then?', 'What decisions do you need?', 'What are you asking for?'] },
+  { id: 3, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Second Vendor Also Impacted', description: 'A second vendor uses the same sub-supplier. They are also disrupted.', consider: ['How did you miss this?', 'What is your third option?', 'How do you prioritize?'] },
+  { id: 9, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Backup System Fails', description: 'When you activate your backup vendor, you discover they also have capacity issues.', consider: ['What is your backup to the backup?', 'Can you get partial capacity?', 'How do you ration resources?'] },
+  { id: 4, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Customer Panic Spiral', description: 'Your three largest customers threaten to leave. They want proof of recovery in 24 hours.', consider: ['What evidence can you provide?', 'What promises are realistic?', 'Who communicates with them?'] },
+  { id: 10, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Executive Pressure', description: 'The CEO demands you fix this in 24 hours or they\'ll "find someone who can."', consider: ['What is realistic?', 'How do you manage up?', 'What help do you need?'] },
+  { id: 5, category: 'fog', categoryLabel: 'Information Fog', title: 'Conflicting Information', description: 'Vendor says 6 hours. Their support says 3 days. Social media says weeks.', consider: ['How do you decide with bad info?', 'What is your planning assumption?', 'How do you verify?'] },
+  { id: 11, category: 'fog', categoryLabel: 'Information Fog', title: 'Vendor Gone Silent', description: 'Your vendor has stopped responding. No status updates, no returned calls for 4 hours.', consider: ['What do you assume?', 'How do you plan without info?', 'Who else can you contact?'] },
+  { id: 6, category: 'external', categoryLabel: 'External Shock', title: 'Concurrent Internal Crisis', description: 'While managing this vendor failure, your own facility experiences an unrelated incident.', consider: ['How do you split resources?', 'Which crisis takes priority?', 'Who leads each response?'] },
+  { id: 12, category: 'external', categoryLabel: 'External Shock', title: 'Competitor Advantage', description: 'Your competitor announces they were not affected and is actively poaching your customers.', consider: ['How did they avoid it?', 'What do you tell customers?', 'How do you respond publicly?'] }
+];
+
+const fullWildCards = [...demoWildCards];
+
+const wildCardCategories = [
+  { id: 'resource', label: 'Resource Loss', icon: 'resource' },
+  { id: 'time', label: 'Time Pressure', icon: 'time' },
+  { id: 'cascade', label: 'Cascading Failures', icon: 'cascade' },
+  { id: 'stakeholder', label: 'Stakeholder Complications', icon: 'stakeholder' },
+  { id: 'fog', label: 'Information Fog', icon: 'fog' },
+  { id: 'external', label: 'External Shocks', icon: 'external' }
+];
+
+const scenarioCategories = [
+  { id: 'cyber', label: 'Vendor Cyber Incidents', icon: 'cyber', range: '1-10' },
+  { id: 'operational', label: 'Vendor Operational Failures', icon: 'operational', range: '11-20' },
+  { id: 'supply', label: 'Supply Chain Disruptions', icon: 'supply', range: '21-30' },
+  { id: 'smb', label: 'SMB-Specific Challenges', icon: 'smb', range: '31-40' },
+  { id: 'compliance', label: 'Regulatory/Compliance', icon: 'compliance', range: '41-50' }
+];
+
+const getCategoryIcon = (category) => {
+  const IconComponent = Icons[category];
+  return IconComponent ? <IconComponent /> : null;
+};
+
+export default function VendorResilienceDeck() {
+  const [hasAccess, setHasAccess] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
+  const [accessError, setAccessError] = useState('');
+  const [currentView, setCurrentView] = useState('main');
+  const [selectedScenario, setSelectedScenario] = useState(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [currentWildCard, setCurrentWildCard] = useState(null);
+  const [selectedWildCategory, setSelectedWildCategory] = useState(null);
+  const [showWildCardSelector, setShowWildCardSelector] = useState(false);
+  const [timerMinutes, setTimerMinutes] = useState(15);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerInput, setTimerInput] = useState('15');
+
+  const availableScenarios = hasAccess ? fullScenarios : demoScenarios;
+  const availableWildCards = hasAccess ? fullWildCards : demoWildCards;
+
+  useEffect(() => {
+    let interval = null;
+    if (timerRunning) {
+      interval = setInterval(() => {
+        if (timerSeconds > 0) {
+          setTimerSeconds(timerSeconds - 1);
+        } else if (timerMinutes > 0) {
+          setTimerMinutes(timerMinutes - 1);
+          setTimerSeconds(59);
+        } else {
+          setTimerRunning(false);
+        }
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerRunning, timerMinutes, timerSeconds]);
+
+  const validateAccessCode = () => {
+    if (accessCode.toUpperCase().startsWith('CS-DECK-') && accessCode.length >= 12) {
+      setHasAccess(true);
+      setAccessError('');
+      setCurrentView('main');
+    } else {
+      setAccessError('Invalid access code. Please check and try again.');
+    }
+  };
+
+  const drawRandomScenario = () => {
+    const randomIndex = Math.floor(Math.random() * availableScenarios.length);
+    setSelectedScenario(availableScenarios[randomIndex]);
+    setIsFlipped(false);
+    setCurrentWildCard(null);
+    setSelectedWildCategory(null);
+    setCurrentView('scenario');
+  };
+
+  const selectScenario = (scenario) => {
+    setSelectedScenario(scenario);
+    setIsFlipped(false);
+    setCurrentWildCard(null);
+    setSelectedWildCategory(null);
+    setCurrentView('scenario');
+  };
+
+  const drawWildCard = (categoryId) => {
+    const categoryCards = availableWildCards.filter(card => card.category === categoryId);
+    const randomIndex = Math.floor(Math.random() * categoryCards.length);
+    setCurrentWildCard(categoryCards[randomIndex]);
+    setSelectedWildCategory(categoryId);
+    setShowWildCardSelector(false);
+  };
+
+  const handleDrawAnother = () => {
+    if (currentWildCard) {
+      const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
+      const randomIndex = Math.floor(Math.random() * categoryCards.length);
+      setCurrentWildCard(categoryCards[randomIndex]);
+    }
+  };
+
+  const startTimer = () => {
+    const mins = parseInt(timerInput) || 15;
+    setTimerMinutes(mins);
+    setTimerSeconds(0);
+    setTimerRunning(true);
+  };
+
+  const resetTimer = () => {
+    setTimerRunning(false);
+    const mins = parseInt(timerInput) || 15;
+    setTimerMinutes(mins);
+    setTimerSeconds(0);
+  };
+
+  const clearWildCard = () => {
+    setCurrentWildCard(null);
+  };
+
+  const renderHeader = () => (
+    <div style={{ backgroundColor: '#fff', padding: '12px 24px', borderBottom: '3px solid #e86c3a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '40px' }} />
+      <div style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>Vendor Resilience Exercise Deck</div>
+    </div>
+  );
+
+  const renderFooter = () => (
+    <div style={{ backgroundColor: '#e0e0e0', padding: '16px 24px', marginTop: '40px', flexShrink: 0 }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ color: '#333', fontSize: '13px' }}>
+          www.ContinuityStrength.com/TPRM
+        </div>
+        <div style={{ color: '#333', fontSize: '13px' }}>
+          © Continuity Strength 2025
+        </div>
+        <div style={{ color: '#333', fontSize: '13px' }}>
+          Contact us at info@ContinuityStrength.com
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderMain = () => (
+    <div style={{ padding: '32px 24px', maxWidth: '600px', margin: '0 auto', flex: 1 }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '8px', color: '#333', fontSize: '28px' }}>Vendor Resilience Exercise Deck</h1>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '32px', fontSize: '15px' }}>Test your team's response to vendor failures. Identify gaps before crises hit.</p>
+      
+      {!hasAccess && (
+        <div style={{ backgroundColor: '#fff8f6', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e86c3a' }}>
+          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 12 wild cards</p>
+          <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <button onClick={drawRandomScenario} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <Icons.dice /> Draw Random Scenario
+        </button>
+        <button onClick={() => setCurrentView('guide')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <Icons.list /> Browse Scenarios & Select
+        </button>
+        {!hasAccess && (
+          <button onClick={() => setCurrentView('access')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#fff', color: '#e86c3a', border: '2px solid #e86c3a', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+            <Icons.unlock /> Enter Access Code
+          </button>
+        )}
+      </div>
+      <div style={{ textAlign: 'center', marginTop: '32px' }}>
+        <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Get the full deck: 50 scenarios + 48 wild cards →</a>
+      </div>
+    </div>
+  );
+
+  const renderScenario = () => {
+    if (!selectedScenario) return null;
+    return (
+      <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', flex: 1 }}>
+        <div style={{ marginBottom: '16px' }}>
+          <button onClick={() => { setCurrentView('main'); setCurrentWildCard(null); setSelectedWildCategory(null); }} style={{ padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
+            <Icons.back /> Back to Deck
+          </button>
+        </div>
+
+        {/* Timer and Wild Card Button Row */}
+        <div style={{ marginBottom: '20px', padding: '12px 16px', backgroundColor: '#f8f8f8', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', position: 'relative' }}>
+          <span style={{ fontWeight: '600', fontSize: '14px', color: '#333' }}>Timer:</span>
+          <input type="number" value={timerInput} onChange={(e) => setTimerInput(e.target.value)} style={{ width: '50px', padding: '6px 8px', borderRadius: '4px', border: '1px solid #ddd', fontSize: '14px' }} min="1" max="60" />
+          <span style={{ fontSize: '14px', color: '#666' }}>min</span>
+          <button onClick={timerRunning ? () => setTimerRunning(false) : startTimer} style={{ padding: '6px 12px', backgroundColor: timerRunning ? '#666' : '#4caf50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px' }}>
+            {timerRunning ? <><Icons.pause /> Pause</> : <><Icons.play /> Start</>}
+          </button>
+          <button onClick={resetTimer} style={{ padding: '6px 12px', backgroundColor: '#f5f5f5', color: '#666', border: '1px solid #ddd', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px' }}>
+            <Icons.reset /> Reset
+          </button>
+          <span style={{ fontWeight: '700', fontSize: '20px', color: timerMinutes === 0 && timerSeconds < 60 ? '#f44336' : '#333' }}>
+            {String(timerMinutes).padStart(2, '0')}:{String(timerSeconds).padStart(2, '0')}
+          </span>
+          
+          {/* Wild Card Button - always visible */}
+          <div style={{ marginLeft: 'auto', position: 'relative' }}>
+            <button onClick={() => setShowWildCardSelector(!showWildCardSelector)} style={{ padding: '8px 16px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Icons.wildcard /> {currentWildCard ? 'Change Category' : 'Add Wild Card'}
+            </button>
+            
+            {/* Dropdown selector */}
+            {showWildCardSelector && (
+              <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '8px', padding: '12px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, width: '220px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#333' }}>Select Category</span>
+                  <button onClick={() => setShowWildCardSelector(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666', padding: '2px' }}><Icons.close /></button>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {wildCardCategories.map(cat => (
+                    <button key={cat.id} onClick={() => drawWildCard(cat.id)} style={{ padding: '8px 12px', backgroundColor: selectedWildCategory === cat.id ? '#fff8f6' : '#f8f8f8', border: selectedWildCategory === cat.id ? '1px solid #e86c3a' : '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ color: '#666' }}>{getCategoryIcon(cat.icon)}</span> {cat.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Cards container - side by side with fixed height */}
+        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', alignItems: 'stretch' }}>
+          {/* Scenario Card - fixed dimensions */}
+          <div style={{ width: '520px', flexShrink: 0 }}>
+            <div onClick={() => setIsFlipped(!isFlipped)} style={{ perspective: '1000px', cursor: 'pointer', height: '100%' }}>
+              <div style={{ position: 'relative', width: '100%', height: '580px', transition: 'transform 0.6s', transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+                {/* Front of card */}
+                <div style={{ position: 'absolute', width: '100%', height: '580px', backfaceVisibility: 'hidden', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', border: '1px solid #eee', boxSizing: 'border-box' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+                    <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
+                    <span style={{ fontSize: '12px', color: '#666', display: 'flex', alignItems: 'center', gap: '6px' }}>{getCategoryIcon(selectedScenario.category)} {selectedScenario.categoryLabel}</span>
+                  </div>
+                  <h2 style={{ fontSize: '24px', marginBottom: '16px', color: '#296ecb', fontWeight: '700' }}>{selectedScenario.title}</h2>
+                  <p style={{ fontSize: '16px', lineHeight: '1.7', color: '#444', flexGrow: 1 }}>{selectedScenario.frontDescription}</p>
+                  <div style={{ textAlign: 'center', marginTop: '24px', color: '#999', fontSize: '13px' }}>Click card to flip →</div>
+                  <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
+                </div>
+                {/* Back of card */}
+                <div style={{ position: 'absolute', width: '100%', height: '580px', backfaceVisibility: 'hidden', backgroundColor: '#fafafa', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', transform: 'rotateY(180deg)', overflow: 'auto', border: '1px solid #eee', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                    <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
+                  </div>
+                  <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>SCENARIO DETAILS</h3>
+                  <ul style={{ margin: '0 0 12px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
+                    {selectedScenario.details.map((detail, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{detail}</li>)}
+                  </ul>
+                  <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>DISCUSSION PROMPTS</h3>
+                  <ul style={{ margin: '0 0 12px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
+                    {selectedScenario.prompts.map((prompt, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{prompt}</li>)}
+                  </ul>
+                  <h3 style={{ fontSize: '13px', color: '#296ecb', marginBottom: '8px', fontWeight: '700' }}>REAL-WORLD CHECK</h3>
+                  <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
+                    {selectedScenario.realWorldCheck.map((check, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{check}</li>)}
+                  </ul>
+                  {/* Lead gen message */}
+                  <div style={{ marginTop: 'auto' }}>
+                    <p style={{ fontSize: '11px', color: '#65b3cf', margin: '0 0 12px 0', lineHeight: '1.5', textAlign: 'center' }}>
+                      {leadGenMessages[selectedScenario.category]}
+                    </p>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Wild Card - same fixed height */}
+          {currentWildCard && (
+            <div style={{ width: '520px', flexShrink: 0 }}>
+              <div style={{ backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '24px', height: '580px', display: 'flex', flexDirection: 'column', border: '2px solid #e86c3a', boxSizing: 'border-box' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <img src="https://continuitystrength.com/s/CS-favicon-cropped-minimized.png" alt="CS" style={{ width: '32px', height: '32px', borderRadius: '4px' }} />
+                  <span style={{ fontSize: '11px', padding: '4px 10px', backgroundColor: '#e86c3a', color: '#fff', borderRadius: '4px', fontWeight: '600' }}>WILD CARD</span>
+                </div>
+                <div style={{ marginBottom: '12px', color: '#666' }}>{getCategoryIcon(currentWildCard.category)}</div>
+                <h2 style={{ fontSize: '22px', marginBottom: '16px', color: '#333', fontWeight: '700' }}>{currentWildCard.title}</h2>
+                <p style={{ fontSize: '16px', lineHeight: '1.7', marginBottom: '16px', color: '#444' }}>{currentWildCard.description}</p>
+                <h3 style={{ fontSize: '13px', color: '#666', marginBottom: '8px', fontWeight: '700' }}>CONSIDER:</h3>
+                <ul style={{ margin: '0 0 20px 0', paddingLeft: '18px', fontSize: '14px', color: '#444', flexGrow: 1 }}>
+                  {currentWildCard.consider.map((item, i) => <li key={i} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{item}</li>)}
+                </ul>
+                <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+                  <button 
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (currentWildCard) {
+                        const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
+                        const randomIndex = Math.floor(Math.random() * categoryCards.length);
+                        setCurrentWildCard(categoryCards[randomIndex]);
+                      }
+                    }} 
+                    style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                  >
+                    <span style={{ pointerEvents: 'none', display: 'flex', alignItems: 'center' }}><Icons.refresh /></span> Draw Another
+                  </button>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); clearWildCard(); }} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
+                    <Icons.close />
+                  </button>
+                </div>
+                <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderGuide = () => (
+    <div style={{ padding: '24px', maxWidth: '700px', margin: '0 auto', flex: 1 }}>
+      <button onClick={() => setCurrentView('main')} style={{ marginBottom: '20px', padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
+        <Icons.back /> Back to Deck
+      </button>
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '32px', marginBottom: '16px' }} />
+        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Scenario Index</h2>
+        <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Click any scenario to begin exercise</p>
+      </div>
+      {scenarioCategories.map(category => {
+        const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+        if (categoryScenarios.length === 0) return null;
+        return (
+          <div key={category.id} style={{ marginBottom: '24px' }}>
+            <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+              {getCategoryIcon(category.icon)} {category.label}
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {categoryScenarios.map(scenario => (
+                <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '12px 16px', backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '8px', cursor: 'pointer', textAlign: 'left', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ color: '#bbb', fontSize: '12px', minWidth: '28px', fontWeight: '500' }}>#{scenario.id}</span> {scenario.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const renderAccessEntry = () => (
+    <div style={{ padding: '32px 24px', maxWidth: '400px', margin: '0 auto', flex: 1 }}>
+      <button onClick={() => setCurrentView('main')} style={{ marginBottom: '24px', padding: '8px 16px', backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
+        <Icons.back /> Back
+      </button>
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '32px', marginBottom: '16px' }} />
+        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Enter Access Code</h2>
+        <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Unlock the full deck with 50 scenarios and 48 wild cards.</p>
+      </div>
+      <input type="text" value={accessCode} onChange={(e) => setAccessCode(e.target.value.toUpperCase())} placeholder="CS-DECK-XXXX" style={{ width: '100%', padding: '14px 16px', fontSize: '16px', border: '2px solid #ddd', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', letterSpacing: '2px', boxSizing: 'border-box' }} />
+      {accessError && <p style={{ color: '#f44336', textAlign: 'center', marginBottom: '16px', fontSize: '14px' }}>{accessError}</p>}
+      <button onClick={validateAccessCode} style={{ width: '100%', padding: '14px 24px', fontSize: '15px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Unlock Full Deck</button>
+      <div style={{ textAlign: 'center', marginTop: '24px' }}>
+        <p style={{ color: '#666', marginBottom: '8px', fontSize: '14px' }}>Don't have an access code?</p>
+        <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '600', fontSize: '14px' }}>Purchase the full deck →</a>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ minHeight: '100vh', backgroundColor: '#fafafa', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', display: 'flex', flexDirection: 'column' }}>
+      {renderHeader()}
+      {currentView === 'main' && renderMain()}
+      {currentView === 'scenario' && renderScenario()}
+      {currentView === 'guide' && renderGuide()}
+      {currentView === 'access' && renderAccessEntry()}
+      {renderFooter()}
+    </div>
+  );
+}
