@@ -481,12 +481,19 @@ export default function VendorResilienceDeck() {
                 <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
                   <button 
                     type="button"
-                    onClick={handleDrawAnother} 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (currentWildCard) {
+                        const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
+                        const randomIndex = Math.floor(Math.random() * categoryCards.length);
+                        setCurrentWildCard(categoryCards[randomIndex]);
+                      }
+                    }} 
                     style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                   >
                     <Icons.refresh /> Draw Another
                   </button>
-                  <button type="button" onClick={clearWildCard} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); clearWildCard(); }} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
                     <Icons.close />
                   </button>
                 </div>
