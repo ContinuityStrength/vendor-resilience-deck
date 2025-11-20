@@ -183,14 +183,20 @@ const demoScenarios = [
 
 const fullScenarios = [...demoScenarios];
 
-// Demo wild cards (6)
+// Demo wild cards (12 - 2 per category)
 const demoWildCards = [
   { id: 1, category: 'resource', categoryLabel: 'Resource Loss', title: 'Key Decision Maker Unavailable', description: 'Your BC lead is unreachable for the next 2 hours.', consider: ['Who has backup authority?', 'What decisions can wait?', 'Are delegation protocols documented?'] },
+  { id: 7, category: 'resource', categoryLabel: 'Resource Loss', title: 'Budget Frozen', description: 'CFO just froze all discretionary spending. Recovery costs cannot be approved through normal channels.', consider: ['What can you do without spending?', 'What absolutely requires funding?', 'How do you get emergency approval?'] },
   { id: 2, category: 'time', categoryLabel: 'Time Pressure', title: 'Media Inquiry Incoming', description: 'A journalist is calling in 30 minutes asking about this vendor disruption.', consider: ['What do you say?', 'What do you hold back?', 'Who speaks to media?'] },
+  { id: 8, category: 'time', categoryLabel: 'Time Pressure', title: 'Board Meeting Tomorrow', description: 'The board wants a full briefing on this situation at tomorrow morning\'s meeting.', consider: ['What can you know by then?', 'What decisions do you need?', 'What are you asking for?'] },
   { id: 3, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Second Vendor Also Impacted', description: 'A second vendor uses the same sub-supplier. They are also disrupted.', consider: ['How did you miss this?', 'What is your third option?', 'How do you prioritize?'] },
+  { id: 9, category: 'cascade', categoryLabel: 'Cascading Failure', title: 'Backup System Fails', description: 'When you activate your backup vendor, you discover they also have capacity issues.', consider: ['What is your backup to the backup?', 'Can you get partial capacity?', 'How do you ration resources?'] },
   { id: 4, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Customer Panic Spiral', description: 'Your three largest customers threaten to leave. They want proof of recovery in 24 hours.', consider: ['What evidence can you provide?', 'What promises are realistic?', 'Who communicates with them?'] },
+  { id: 10, category: 'stakeholder', categoryLabel: 'Stakeholder Complication', title: 'Executive Pressure', description: 'The CEO demands you fix this in 24 hours or they\'ll "find someone who can."', consider: ['What is realistic?', 'How do you manage up?', 'What help do you need?'] },
   { id: 5, category: 'fog', categoryLabel: 'Information Fog', title: 'Conflicting Information', description: 'Vendor says 6 hours. Their support says 3 days. Social media says weeks.', consider: ['How do you decide with bad info?', 'What is your planning assumption?', 'How do you verify?'] },
-  { id: 6, category: 'external', categoryLabel: 'External Shock', title: 'Concurrent Internal Crisis', description: 'While managing this vendor failure, your own facility experiences an unrelated incident.', consider: ['How do you split resources?', 'Which crisis takes priority?', 'Who leads each response?'] }
+  { id: 11, category: 'fog', categoryLabel: 'Information Fog', title: 'Vendor Gone Silent', description: 'Your vendor has stopped responding. No status updates, no returned calls for 4 hours.', consider: ['What do you assume?', 'How do you plan without info?', 'Who else can you contact?'] },
+  { id: 6, category: 'external', categoryLabel: 'External Shock', title: 'Concurrent Internal Crisis', description: 'While managing this vendor failure, your own facility experiences an unrelated incident.', consider: ['How do you split resources?', 'Which crisis takes priority?', 'Who leads each response?'] },
+  { id: 12, category: 'external', categoryLabel: 'External Shock', title: 'Competitor Advantage', description: 'Your competitor announces they were not affected and is actively poaching your customers.', consider: ['How did they avoid it?', 'What do you tell customers?', 'How do you respond publicly?'] }
 ];
 
 const fullWildCards = [...demoWildCards];
@@ -343,7 +349,7 @@ export default function VendorResilienceDeck() {
       
       {!hasAccess && (
         <div style={{ backgroundColor: '#fff8f6', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e86c3a' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 6 wild cards</p>
+          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 12 wild cards</p>
           <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="http://continuitystrength.com/buycards" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
         </div>
       )}
