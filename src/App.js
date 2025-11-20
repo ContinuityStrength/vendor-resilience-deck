@@ -491,7 +491,7 @@ export default function VendorResilienceDeck() {
                     }} 
                     style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                   >
-                    <Icons.refresh /> Draw Another
+                    <span style={{ pointerEvents: 'none', display: 'flex', alignItems: 'center' }}><Icons.refresh /></span> Draw Another
                   </button>
                   <button type="button" onClick={(e) => { e.stopPropagation(); clearWildCard(); }} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
                     <Icons.close />
