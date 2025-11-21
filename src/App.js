@@ -644,72 +644,100 @@ function VendorResilienceDeck() {
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <img src="https://continuitystrength.com/s/CS-Logo_Cropped-and-Transparent.png" alt="Continuity Strength" style={{ height: '32px', marginBottom: '16px' }} />
         <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Scenario Index</h2>
-        <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Click any scenario to begin exercise</p>
+        <p style={{ margin: '0 0 12px 0', color: '#666', fontSize: '14px' }}>Click any scenario to begin exercise</p>
+        {!hasAccess && (
+          <a href="https://buy.stripe.com/eVq6oH8MGcHB3XKdZ14sE0W" style={{ color: '#e86c3a', fontSize: '15px', fontWeight: '600', textDecoration: 'none' }}>
+            Get the Full Deck to unlock 50 scenarios + 48 wild cards →
+          </a>
+        )}
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
-        {scenarioCategories.slice(0, 3).map(category => {
-          const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
-          if (categoryScenarios.length === 0) return null;
-          return (
-            <div key={category.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
-              <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-                {getCategoryIcon(category.icon)} {category.label}
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {categoryScenarios.map(scenario => (
-                  <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
-                  </button>
-                ))}
+      
+      {!hasAccess ? (
+        // Demo version - 3 scenarios in one row
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+          {demoScenarios.map(scenario => {
+            const category = scenarioCategories.find(c => c.id === scenario.category);
+            return (
+              <div key={scenario.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                  {getCategoryIcon(category.icon)} {category.label}
+                </h3>
+                <button onClick={() => selectScenario(scenario)} style={{ width: '100%', padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                </button>
               </div>
+            );
+          })}
+        </div>
+      ) : (
+        // Full version - grid layout
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
+            {scenarioCategories.slice(0, 3).map(category => {
+              const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+              if (categoryScenarios.length === 0) return null;
+              return (
+                <div key={category.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                  <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                    {getCategoryIcon(category.icon)} {category.label}
+                  </h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {categoryScenarios.map(scenario => (
+                      <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+            <div style={{ gridColumn: '1 / 2' }}>
+              {(() => {
+                const category = scenarioCategories[3];
+                const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+                if (categoryScenarios.length === 0) return null;
+                return (
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                    <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                      {getCategoryIcon(category.icon)} {category.label}
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {categoryScenarios.map(scenario => (
+                        <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
-          );
-        })}
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-        <div style={{ gridColumn: '1 / 2' }}>
-          {(() => {
-            const category = scenarioCategories[3];
-            const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
-            if (categoryScenarios.length === 0) return null;
-            return (
-              <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-                  {getCategoryIcon(category.icon)} {category.label}
-                </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {categoryScenarios.map(scenario => (
-                    <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-        <div style={{ gridColumn: '2 / 3' }}>
-          {(() => {
-            const category = scenarioCategories[4];
-            const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
-            if (categoryScenarios.length === 0) return null;
-            return (
-              <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-                  {getCategoryIcon(category.icon)} {category.label}
-                </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {categoryScenarios.map(scenario => (
-                    <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      </div>
+            <div style={{ gridColumn: '2 / 3' }}>
+              {(() => {
+                const category = scenarioCategories[4];
+                const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+                if (categoryScenarios.length === 0) return null;
+                return (
+                  <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                    <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                      {getCategoryIcon(category.icon)} {category.label}
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {categoryScenarios.map(scenario => (
+                        <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 
