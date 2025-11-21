@@ -654,21 +654,28 @@ function VendorResilienceDeck() {
       
       {!hasAccess ? (
         // Demo version - 3 scenarios in one row
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-          {demoScenarios.map(scenario => {
-            const category = scenarioCategories.find(c => c.id === scenario.category);
-            return (
-              <div key={scenario.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-                  {getCategoryIcon(category.icon)} {category.label}
-                </h3>
-                <button onClick={() => selectScenario(scenario)} style={{ width: '100%', padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
-                </button>
-              </div>
-            );
-          })}
-        </div>
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+            {demoScenarios.map(scenario => {
+              const category = scenarioCategories.find(c => c.id === scenario.category);
+              return (
+                <div key={scenario.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                  <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                    {getCategoryIcon(category.icon)} {category.label}
+                  </h3>
+                  <button onClick={() => selectScenario(scenario)} style={{ width: '100%', padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '32px' }}>
+            <a href="https://continuitystrength.com/s/Screenshot-2025-11-21-at-115400AM.png" target="_blank" rel="noopener noreferrer" style={{ color: '#296ecb', fontSize: '15px', fontWeight: '600', textDecoration: 'none' }}>
+              View scenarios covered in Full Deck →
+            </a>
+          </div>
+        </>
       ) : (
         // Full version - grid layout
         <>
