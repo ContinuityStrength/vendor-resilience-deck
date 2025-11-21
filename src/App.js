@@ -138,6 +138,12 @@ const Icons = {
   )
 };
 
+// Valid access codes - only these codes will work
+// Generate new codes using the admin code generator
+const validAccessCodes = [
+  'CS-DECK-DEMO' // Example code for testing - replace with real codes from generator
+];
+
 // Lead gen messages by category
 const leadGenMessages = {
   cyber: "Continuity Strength helps organizations quickly assess and monitor vendor cyber resilience.",
@@ -368,7 +374,8 @@ function VendorResilienceDeck() {
   }, [timerRunning, timerMinutes, timerSeconds]);
 
   const validateAccessCode = () => {
-    if (accessCode.toUpperCase().startsWith('CS-DECK-') && accessCode.length >= 12) {
+    const enteredCode = accessCode.toUpperCase().trim();
+    if (validAccessCodes.includes(enteredCode)) {
       setHasAccess(true);
       setAccessError('');
       setCurrentView('main');
@@ -470,11 +477,11 @@ function VendorResilienceDeck() {
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <button onClick={drawRandomScenario} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#e86c3a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <Icons.dice /> Draw Random Scenario
+        <button onClick={() => setCurrentView('guide')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#296ecb', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <img src="https://continuitystrength.com/s/Scenario-List.png" alt="" style={{ width: '20px', height: '20px' }} /> Browse Scenarios & Select
         </button>
-        <button onClick={() => setCurrentView('guide')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <Icons.list /> Browse Scenarios & Select
+        <button onClick={drawRandomScenario} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#65b3cf', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <img src="https://continuitystrength.com/s/Dice.png" alt="" style={{ width: '20px', height: '20px' }} /> Draw Random Scenario
         </button>
         {!hasAccess && (
           <button onClick={() => setCurrentView('access')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#fff', color: '#e86c3a', border: '2px solid #e86c3a', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
@@ -659,25 +666,49 @@ function VendorResilienceDeck() {
           );
         })}
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
-        {scenarioCategories.slice(3, 5).map(category => {
-          const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
-          if (categoryScenarios.length === 0) return null;
-          return (
-            <div key={category.id} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
-              <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-                {getCategoryIcon(category.icon)} {category.label}
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {categoryScenarios.map(scenario => (
-                  <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
-                  </button>
-                ))}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+        <div style={{ gridColumn: '1 / 2' }}>
+          {(() => {
+            const category = scenarioCategories[3];
+            const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+            if (categoryScenarios.length === 0) return null;
+            return (
+              <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                  {getCategoryIcon(category.icon)} {category.label}
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {categoryScenarios.map(scenario => (
+                    <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })()}
+        </div>
+        <div style={{ gridColumn: '2 / 3' }}>
+          {(() => {
+            const category = scenarioCategories[4];
+            const categoryScenarios = availableScenarios.filter(s => s.category === category.id);
+            if (categoryScenarios.length === 0) return null;
+            return (
+              <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '15px', color: '#296ecb', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
+                  {getCategoryIcon(category.icon)} {category.label}
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {categoryScenarios.map(scenario => (
+                    <button key={scenario.id} onClick={() => selectScenario(scenario)} style={{ padding: '10px 12px', backgroundColor: '#f8f8f8', border: '1px solid #eee', borderRadius: '6px', cursor: 'pointer', textAlign: 'left', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ color: '#bbb', fontSize: '11px', minWidth: '24px', fontWeight: '500' }}>#{scenario.id}</span> <span style={{ fontSize: '13px' }}>{scenario.title}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
       </div>
     </div>
   );
