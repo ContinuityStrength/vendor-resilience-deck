@@ -138,7 +138,7 @@ const Icons = {
   )
 };
 
-// Lead gen messages by category
+// Lead gen messages by category - ONLY for full deck cards (ID 4+)
 const leadGenMessages = {
   cyber: "Continuity Strength helps organizations quickly assess and monitor vendor cyber resilience.",
   operational: "Continuity Strength helps organizations quickly build operational resilience into vendor relationships.",
@@ -181,7 +181,7 @@ const demoScenarios = [
   }
 ];
 
-// ALL 50 SCENARIOS - Continue adding from where demo left off
+// ALL 50 SCENARIOS
 const fullScenarios = [
   ...demoScenarios,
   // Cyber scenarios 4-10
@@ -470,45 +470,6 @@ function VendorResilienceDeck() {
     </div>
   );
 
-  const renderMain = () => (
-    <div style={{ padding: '32px 24px', maxWidth: '600px', margin: '0 auto', flex: 1 }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '8px', color: '#333', fontSize: '28px' }}>Vendor Resilience Exercise Deck</h1>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '32px', fontSize: '15px' }}>Test your team's response to vendor failures. Identify gaps before crises hit.</p>
-      
-      {!hasAccess && (
-        <div style={{ backgroundColor: '#fff8f6', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e86c3a' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 12 wild cards</p>
-          <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="https://continuitystrength.com/resiliencecards" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
-        </div>
-      )}
-
-      {hasAccess && (
-        <div style={{ backgroundColor: '#f0f9ff', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #0ea5e9' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#0ea5e9', fontSize: '14px' }}>Full Access: 50 scenarios + 48 wild cards unlocked!</p>
-        </div>
-      )}
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <button onClick={() => setCurrentView('guide')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#296ecb', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <img src="https://continuitystrength.com/s/Scenario-List.png" alt="" style={{ width: '20px', height: '20px' }} /> Browse Scenarios & Select
-        </button>
-        <button onClick={drawRandomScenario} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#65b3cf', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <img src="https://continuitystrength.com/s/Dice.png" alt="" style={{ width: '20px', height: '20px' }} /> Draw Random Scenario
-        </button>
-        {!hasAccess && (
-          <button onClick={() => setCurrentView('access')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#fff', color: '#e86c3a', border: '2px solid #e86c3a', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-            <Icons.unlock /> Enter Access Code
-          </button>
-        )}
-      </div>
-      {!hasAccess && (
-        <div style={{ textAlign: 'center', marginTop: '32px' }}>
-          <a href="https://continuitystrength.com/resiliencecards" style={{ color: '#e86c3a', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Get the full deck: 50 scenarios + 48 wild cards →</a>
-        </div>
-      )}
-    </div>
-  );
-
   const renderScenario = () => {
     if (!selectedScenario) return null;
     return (
@@ -593,11 +554,14 @@ function VendorResilienceDeck() {
                   <ul style={{ margin: '0 0 16px 0', paddingLeft: '18px', fontSize: '13px', color: '#444' }}>
                     {selectedScenario.realWorldCheck.map((check, i) => <li key={i} style={{ marginBottom: '4px', lineHeight: '1.4' }}>{check}</li>)}
                   </ul>
-                  {/* Lead gen message */}
+                  
+                  {/* Lead gen message - ONLY for full deck cards (ID 4+) */}
                   <div style={{ marginTop: 'auto' }}>
-                    <p style={{ fontSize: '11px', color: '#65b3cf', margin: '0 0 12px 0', lineHeight: '1.5', textAlign: 'center' }}>
-                      {leadGenMessages[selectedScenario.category]}
-                    </p>
+                    {selectedScenario.id > 3 && (
+                      <p style={{ fontSize: '11px', color: '#65b3cf', margin: '0 0 12px 0', lineHeight: '1.5', textAlign: 'center' }}>
+                        {leadGenMessages[selectedScenario.category]}
+                      </p>
+                    )}
                     <div style={{ textAlign: 'center', fontSize: '10px', color: '#bbb' }}>© Continuity Strength 2025</div>
                   </div>
                 </div>
@@ -625,14 +589,9 @@ function VendorResilienceDeck() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (currentWildCard) {
-                        const categoryCards = availableWildCards.filter(card => card.category === currentWildCard.category);
-                        const randomIndex = Math.floor(Math.random() * categoryCards.length);
-                        setCurrentWildCard(categoryCards[randomIndex]);
-                      }
+                      handleDrawAnother();
                     }} 
-                    style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                  >
+                    style={{ flex: 1, padding: '10px 16px', backgroundColor: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <span style={{ pointerEvents: 'none', display: 'flex', alignItems: 'center' }}><Icons.refresh /></span> Draw Another
                   </button>
                   <button type="button" onClick={(e) => { e.stopPropagation(); clearWildCard(); }} style={{ padding: '10px 16px', backgroundColor: '#fff', color: '#666', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
@@ -647,6 +606,45 @@ function VendorResilienceDeck() {
       </div>
     );
   };
+
+  const renderMain = () => (
+    <div style={{ padding: '32px 24px', maxWidth: '600px', margin: '0 auto', flex: 1 }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '8px', color: '#333', fontSize: '28px' }}>Vendor Resilience Exercise Deck</h1>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '32px', fontSize: '15px' }}>Test your team's response to vendor failures. Identify gaps before crises hit.</p>
+      
+      {!hasAccess && (
+        <div style={{ backgroundColor: '#fff8f6', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e86c3a' }}>
+          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#e86c3a', fontSize: '14px' }}>Demo Mode: 3 scenarios + 12 wild cards</p>
+          <p style={{ margin: '0', fontSize: '13px', color: '#666' }}>Get the full deck with 50 scenarios + 48 wild cards. <a href="https://continuitystrength.com/resiliencecards" style={{ color: '#e86c3a', fontWeight: '500' }}>Purchase now →</a></p>
+        </div>
+      )}
+
+      {hasAccess && (
+        <div style={{ backgroundColor: '#f0f9ff', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #0ea5e9' }}>
+          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#0ea5e9', fontSize: '14px' }}>Full Access: 50 scenarios + 48 wild cards unlocked!</p>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <button onClick={() => setCurrentView('guide')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#296ecb', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <Icons.list /> Browse Scenarios & Select
+        </button>
+        <button onClick={drawRandomScenario} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#65b3cf', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <Icons.dice /> Draw Random Scenario
+        </button>
+        {!hasAccess && (
+          <button onClick={() => setCurrentView('access')} style={{ padding: '16px 24px', fontSize: '15px', backgroundColor: '#fff', color: '#e86c3a', border: '2px solid #e86c3a', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+            <Icons.unlock /> Enter Access Code
+          </button>
+        )}
+      </div>
+      {!hasAccess && (
+        <div style={{ textAlign: 'center', marginTop: '32px' }}>
+          <a href="https://continuitystrength.com/resiliencecards" style={{ color: '#e86c3a', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Get the full deck: 50 scenarios + 48 wild cards →</a>
+        </div>
+      )}
+    </div>
+  );
 
   const renderGuide = () => (
     <div style={{ padding: '24px', maxWidth: '1100px', margin: '0 auto', flex: 1 }}>
@@ -683,8 +681,8 @@ function VendorResilienceDeck() {
             })}
           </div>
           <div style={{ textAlign: 'center', marginTop: '32px' }}>
-            <a href="https://continuitystrength.com/s/Screenshot-2025-11-21-at-115400AM.png" target="_blank" rel="noopener noreferrer" style={{ color: '#296ecb', fontSize: '15px', fontWeight: '600', textDecoration: 'none' }}>
-              View scenarios covered in Full Deck →
+            <a href="https://continuitystrength.com/resiliencecards" style={{ color: '#296ecb', fontSize: '15px', fontWeight: '600', textDecoration: 'none' }}>
+              Purchase full deck to unlock all 50 scenarios →
             </a>
           </div>
         </>
@@ -780,6 +778,8 @@ function VendorResilienceDeck() {
     </div>
   );
 
+  // Other render methods remain the same...
+  
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafafa', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', display: 'flex', flexDirection: 'column' }}>
       {renderHeader()}
