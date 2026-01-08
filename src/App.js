@@ -636,7 +636,7 @@ function VendorResilienceDeck() {
     <div style={{ padding: '80px 40px 60px 40px', maxWidth: '680px', margin: '0 auto', flex: 1 }}>
       
       {/* Main Title */}
-      <h1 style={{ textAlign: 'center', marginBottom: '16px', color: '#111827', fontSize: '42px', fontWeight: '300', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '16px', color: '#111827', fontSize: '32px', fontWeight: '400', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
         Vendor Resilience Exercise Deck
       </h1>
       
